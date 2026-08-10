@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Singapore Commute Manager - Fastest Route Predictor</title>
+  <title>Singapore Commute Manager - JSON DB Powered</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -289,7 +289,7 @@
       border: 1px solid rgba(239, 68, 68, 0.5);
     }
 
-    /* Modern Journey Node Grid (No text arrows) */
+    /* Journey Nodes Card Grid */
     .journey-nodes-grid {
       display: flex;
       align-items: center;
@@ -664,7 +664,7 @@
       </div>
       <div style="display: flex; align-items: center; gap: 10px;">
         <button class="btn btn-secondary" id="toggleDashboardModeBtn">📊 Dashboard Only Mode</button>
-        <div class="live-clock" id="clock">14:13:00 SGT</div>
+        <div class="live-clock" id="clock">14:27:00 SGT</div>
       </div>
     </header>
 
@@ -763,7 +763,7 @@
             <div style="display: flex; align-items: center; gap: 6px; font-weight: 700; font-size: 0.85rem; color: var(--accent-purple);" id="wTitle">
               📍 NEARBY STOPS
             </div>
-            <div style="font-size: 0.7rem; color: var(--text-muted);" id="wClock">14:13</div>
+            <div style="font-size: 0.7rem; color: var(--text-muted);" id="wClock">14:27</div>
           </div>
 
           <div id="wBody" style="display: flex; flex-direction: column; gap: 6px;">
@@ -1022,6 +1022,20 @@
       const stored = localStorage.getItem('sg_commute_saved_routes');
       if (stored) savedRoutes = JSON.parse(stored);
     } catch(e) {}
+
+    // Load Central JSON Database (public/routes-db.json)
+    async function loadJsonDatabase() {
+      try {
+        const res = await fetch('/public/routes-db.json');
+        if (res.ok) {
+          const db = await res.json();
+          if (db.stopLookup) Object.assign(busStopLookup, db.stopLookup);
+          if (db.commuteRoutes && (!localStorage.getItem('sg_commute_saved_routes'))) {
+            savedRoutes = db.commuteRoutes;
+          }
+        }
+      } catch(e) {}
+    }
 
     function persistRoutes() {
       try {
@@ -1881,8 +1895,10 @@ function calcMin(iso) {
     document.getElementById('refreshBtn').addEventListener('click', updateDashboard);
 
     applyDashboardModeUI();
-    renderRouteChips();
-    updateDashboard();
+    loadJsonDatabase().then(() => {
+      renderRouteChips();
+      updateDashboard();
+    });
     setInterval(updateDashboard, 15000);
   </script>
 </body>

@@ -1,0 +1,64 @@
+{
+  "nearbyStops": [
+    {
+      "code": "84249",
+      "name": "Blk 124 (Bedok Reservoir Rd)",
+      "importantBuses": ["14", "222"]
+    },
+    {
+      "code": "84241",
+      "name": "Blk 81 (Bedok Reservoir Rd)",
+      "importantBuses": ["14", "47"]
+    }
+  ],
+  "commuteRoutes": [
+    {
+      "id": "r1",
+      "name": "🏢 Morning Office",
+      "originStopCode": "84241",
+      "originStopName": "Blk 81 (Home)",
+      "originBusNo": "14",
+      "transferStopCode": "85091",
+      "transferStopName": "Transfer (Amber Rd)",
+      "transferBusNo": "47",
+      "officeStopCode": "96381",
+      "officeStopName": "Office (Changi)",
+      "ride1Min": 12,
+      "ride2Min": 18,
+      "activeDays": [1, 2, 3, 4, 5],
+      "startHour": 10,
+      "endHour": 12
+    },
+    {
+      "id": "r2",
+      "name": "🏠 Evening Home",
+      "originStopCode": "96381",
+      "originStopName": "Office (Changi)",
+      "originBusNo": "47",
+      "transferStopCode": "85091",
+      "transferStopName": "Transfer (Amber Rd)",
+      "transferBusNo": "14",
+      "officeStopCode": "84241",
+      "officeStopName": "Blk 81 (Home)",
+      "ride1Min": 18,
+      "ride2Min": 12,
+      "activeDays": [1, 2, 3, 4, 5],
+      "startHour": 18,
+      "endHour": 21
+    }
+  ],
+  "stopLookup": {
+    "84249": "Blk 124 (Bedok Reservoir)",
+    "84241": "Blk 81 (Bedok Reservoir)",
+    "85091": "Opp Amber Residences",
+    "96381": "Changi Business Park",
+    "84009": "Bedok Bus Interchange",
+    "02051": "Opp Ritz-Carlton",
+    "02049": "Raffles Hotel",
+    "04169": "City Hall Stn Exit B",
+    "03218": "Dhoby Ghaut Stn Exit B",
+    "08057": "Plaza Singapura",
+    "20251": "Jurong East Int",
+    "17009": "Clementi Int"
+  }
+}
