@@ -1,23 +1,23 @@
 {
   "version": 2,
-  "rewrites": [
+  "builds": [
     {
-      "source": "/api/bus-arrival",
-      "destination": "/api/bus-arrival.js"
+      "src": "index.html",
+      "use": "@vercel/static"
     },
     {
-      "source": "/(.*)",
-      "destination": "/index.html"
+      "src": "api/bus-arrival.js",
+      "use": "@vercel/node"
     }
   ],
-  "headers": [
+  "routes": [
     {
-      "source": "/api/(.*)",
-      "headers": [
-        { "key": "Access-Control-Allow-Origin", "value": "*" },
-        { "key": "Access-Control-Allow-Methods", "value": "GET, OPTIONS, POST" },
-        { "key": "Access-Control-Allow-Headers", "value": "Content-Type, AccountKey, *" }
-      ]
+      "src": "/api/bus-arrival",
+      "dest": "/api/bus-arrival.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
     }
   ]
 }
