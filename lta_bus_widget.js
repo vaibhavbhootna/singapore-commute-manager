@@ -2,8 +2,6 @@
 // iPhone Home Screen Widget: Nearby Stops (Blk 124 & Blk 81) & Scheduled Commute
 // ============================================================================
 
-const LTA_ACCOUNT_KEY = "JGy+GlkWTsqJFUgeMJxDNw==";
-
 const widget = await createWidget();
 
 if (config.runsInWidget) {
@@ -237,21 +235,12 @@ function widgetBadge(parentStack, waitTime) {
 }
 
 async function fetchStop(busStopCode) {
-  const apiUrls = [
-    `https://singapore-commute-manager.vercel.app/api/bus-arrival?BusStopCode=${busStopCode}`,
-    `https://datamall2.mytransport.sg/ltaodataservice/v3/BusArrival?BusStopCode=${busStopCode}`
-  ];
-
-  for (const url of apiUrls) {
-    try {
-      const req = new Request(url);
-      if (url.includes("datamall2")) {
-        req.headers = { "AccountKey": LTA_ACCOUNT_KEY };
-      }
-      const res = await req.loadJSON();
-      if (res && res.Services && res.Services.length > 0) return res;
-    } catch (e) {}
-  }
+  const url = `https://singapore-commute-manager.vercel.app/api/bus-arrival?BusStopCode=${busStopCode}`;
+  try {
+    const req = new Request(url);
+    const res = await req.loadJSON();
+    if (res && res.Services && res.Services.length > 0) return res;
+  } catch (e) {}
 
   const nowMs = Date.now();
   const makeBus = (min) => ({ EstimatedArrival: new Date(nowMs + min * 60000).toISOString() });

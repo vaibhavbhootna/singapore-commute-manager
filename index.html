@@ -1604,8 +1604,6 @@
 
     function generateWidgetScript(route) {
       return `// Scriptable iOS Widget: Smart Scheduled Commute & Nearby Stops Mode
-const LTA_KEY = "JGy+GlkWTsqJFUgeMJxDNw==";
-
 const widget = await createWidget();
 if (config.runsInWidget) Script.setWidget(widget);
 else widget.presentMedium();
@@ -1796,18 +1794,11 @@ async function createWidget() {
 }
 
 async function fetchStop(code) {
-  const urls = [
-    "https://singapore-commute-manager.vercel.app/api/bus-arrival?BusStopCode=" + code,
-    "https://datamall2.mytransport.sg/ltaodataservice/v3/BusArrival?BusStopCode=" + code
-  ];
-  for (let u of urls) {
-    try {
-      const req = new Request(u);
-      if (u.includes("datamall2")) req.headers = { "AccountKey": LTA_KEY };
-      const res = await req.loadJSON();
-      if (res && res.Services && res.Services.length > 0) return res;
-    } catch(e) {}
-  }
+  try {
+    const req = new Request("https://singapore-commute-manager.vercel.app/api/bus-arrival?BusStopCode=" + code);
+    const res = await req.loadJSON();
+    if (res && res.Services && res.Services.length > 0) return res;
+  } catch(e) {}
   return null;
 }
 
