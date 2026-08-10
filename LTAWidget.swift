@@ -32,28 +32,60 @@ struct LTAWidgetProvider: TimelineProvider {
     }
     
     private func fetchLTABusData(busStopCode: String, completion: @escaping (BusEntry) -> Void) {
-        // Replace with your LTA AccountKey
-        let accountKey = "YOUR_LTA_ACCOUNT_KEY"
-        guard let url = URL(string: "https://datamall2.mytransport.sg/ltaodataservice/v3/BusArrival?BusStopCode=\(busStopCode)") else {
+        let apiUrlStr = "https://singapore-commute-manager.vercel.app/api/bus-arrival?BusStopCode=\(busStopCode)"
+        guard let url = URL(string: apiUrlStr) else {
             completion(placeholder(in: SimpleEntryContext()))
             return
         }
         
         var request = URLRequest(url: url)
-        request.addValue(accountKey, forHTTPHeaderField: "AccountKey")
+        request.timeoutInterval = 10
         
         URLSession.shared.dataTask(with: request) { data, _, error in
             guard let data = data, error == nil else {
                 completion(placeholder(in: SimpleEntryContext()))
                 return
             }
-            // Parse LTA JSON response
-            // Map Services -> BusServiceItem -> BusEntry
-            let parsedEntry = BusEntry(date: Date(), stopCode: busStopCode, services: [
-                BusServiceItem(serviceNo: "176", next1: "Arr", next2: "12m", load: "SEA"),
-                BusServiceItem(serviceNo: "30", next1: "1m", next2: "7m", load: "SDA")
-            ])
-            completion(parsedEntry)
+            
+            struct LTAResponse: Decodable {
+                let Services: [LTAService]?
+            }
+            struct LTAService: Decodable {
+                let ServiceNo: String
+                let NextBus: LTABusTime?
+                let NextBus2: LTABusTime?
+            }
+            struct LTABusTime: Decodable {
+                let EstimatedArrival: String?
+                let Load: String?
+            }
+            
+            func parseMin(_ isoStr: String?) -> String {
+                guard let isoStr = isoStr, !isoStr.isEmpty else { return "-" }
+                let formatter = ISO8601DateFormatter()
+                formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+                let date = formatter.date(from: isoStr) ?? ISO8601DateFormatter().date(from: isoStr)
+                guard let arrivalDate = date else { return "-" }
+                let diff = Int(arrivalDate.timeIntervalSinceNow / 60)
+                if diff <= 1 { return "Arr" }
+                return "\(diff)m"
+            }
+            
+            if let decoded = try? JSONDecoder().decode(LTAResponse.self, from: data),
+               let svcs = decoded.Services, !svcs.isEmpty {
+                let items = svcs.prefix(4).map { s in
+                    BusServiceItem(
+                        serviceNo: s.ServiceNo,
+                        next1: parseMin(s.NextBus?.EstimatedArrival),
+                        next2: parseMin(s.NextBus2?.EstimatedArrival),
+                        load: s.NextBus?.Load ?? "SEA"
+                    )
+                }
+                let entry = BusEntry(date: Date(), stopCode: busStopCode, services: items)
+                completion(entry)
+            } else {
+                completion(placeholder(in: SimpleEntryContext()))
+            }
         }.resume()
     }
 }

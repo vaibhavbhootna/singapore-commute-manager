@@ -53,12 +53,12 @@ async function createWidget() {
       fetchStop("84241")
     ]);
 
-    const s124 = d124?.Services?.find(s => s.ServiceNo === "14");
+    const s124 = d124?.Services?.find(s => s.ServiceNo === "46");
     const s81 = d81?.Services?.find(s => s.ServiceNo === "14");
 
     const row1 = widget.addStack();
     row1.centerAlignContent();
-    const r1L = row1.addText("🚏 Blk 124 (Bus 14): ");
+    const r1L = row1.addText("🚏 Blk 124 (Bus 46): ");
     r1L.font = Font.systemFont(11);
     r1L.textColor = new Color("#94a3b8");
 
@@ -237,13 +237,21 @@ function widgetBadge(parentStack, waitTime) {
 }
 
 async function fetchStop(busStopCode) {
-  const url = `https://datamall2.mytransport.sg/ltaodataservice/v3/BusArrival?BusStopCode=${busStopCode}`;
-  const req = new Request(url);
-  req.headers = { "AccountKey": LTA_ACCOUNT_KEY };
-  try {
-    const res = await req.loadJSON();
-    if (res && res.Services && res.Services.length > 0) return res;
-  } catch (e) {}
+  const apiUrls = [
+    `https://singapore-commute-manager.vercel.app/api/bus-arrival?BusStopCode=${busStopCode}`,
+    `https://datamall2.mytransport.sg/ltaodataservice/v3/BusArrival?BusStopCode=${busStopCode}`
+  ];
+
+  for (const url of apiUrls) {
+    try {
+      const req = new Request(url);
+      if (url.includes("datamall2")) {
+        req.headers = { "AccountKey": LTA_ACCOUNT_KEY };
+      }
+      const res = await req.loadJSON();
+      if (res && res.Services && res.Services.length > 0) return res;
+    } catch (e) {}
+  }
 
   const nowMs = Date.now();
   const makeBus = (min) => ({ EstimatedArrival: new Date(nowMs + min * 60000).toISOString() });

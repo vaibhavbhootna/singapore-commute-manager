@@ -1201,29 +1201,22 @@
 
     async function fetchStopData(stopCode) {
       const urls = [
-        `http://localhost:5173/api/bus-arrival?BusStopCode=${stopCode}`,
-        `/api/bus-arrival?BusStopCode=${stopCode}`
+        `/api/bus-arrival?BusStopCode=${stopCode}`,
+        `https://singapore-commute-manager.vercel.app/api/bus-arrival?BusStopCode=${stopCode}`,
+        `https://datamall2.mytransport.sg/ltaodataservice/v3/BusArrival?BusStopCode=${stopCode}`
       ];
 
       for (let url of urls) {
         try {
-          const res = await fetch(url);
+          const res = await fetch(url, {
+            headers: url.includes('datamall2') ? { 'AccountKey': 'JGy+GlkWTsqJFUgeMJxDNw==' } : {}
+          });
           if (res.ok) {
             const data = await res.json();
             if (data && data.Services && data.Services.length > 0) return data;
           }
         } catch(e) {}
       }
-
-      try {
-        const res = await fetch(`https://datamall2.mytransport.sg/ltaodataservice/v3/BusArrival?BusStopCode=${stopCode}`, {
-          headers: { 'AccountKey': 'JGy+GlkWTsqJFUgeMJxDNw==' }
-        });
-        if (res.ok) {
-          const data = await res.json();
-          if (data && data.Services && data.Services.length > 0) return data;
-        }
-      } catch(e) {}
 
       return getFallbackDataForStop(stopCode);
     }
@@ -1803,9 +1796,19 @@ async function createWidget() {
 }
 
 async function fetchStop(code) {
-  const req = new Request("https://datamall2.mytransport.sg/ltaodataservice/v3/BusArrival?BusStopCode=" + code);
-  req.headers = { "AccountKey": LTA_KEY };
-  try { return await req.loadJSON(); } catch(e) { return null; }
+  const urls = [
+    "https://singapore-commute-manager.vercel.app/api/bus-arrival?BusStopCode=" + code,
+    "https://datamall2.mytransport.sg/ltaodataservice/v3/BusArrival?BusStopCode=" + code
+  ];
+  for (let u of urls) {
+    try {
+      const req = new Request(u);
+      if (u.includes("datamall2")) req.headers = { "AccountKey": LTA_KEY };
+      const res = await req.loadJSON();
+      if (res && res.Services && res.Services.length > 0) return res;
+    } catch(e) {}
+  }
+  return null;
 }
 
 function calcMin(iso) {
