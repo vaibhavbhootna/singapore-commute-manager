@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Singapore Commute Manager - JSON DB Powered</title>
+  <title>Singapore Commute Manager - Stop Lookup Names</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -664,7 +664,7 @@
       </div>
       <div style="display: flex; align-items: center; gap: 10px;">
         <button class="btn btn-secondary" id="toggleDashboardModeBtn">📊 Dashboard Only Mode</button>
-        <div class="live-clock" id="clock">14:27:00 SGT</div>
+        <div class="live-clock" id="clock">14:32:00 SGT</div>
       </div>
     </header>
 
@@ -763,7 +763,7 @@
             <div style="display: flex; align-items: center; gap: 6px; font-weight: 700; font-size: 0.85rem; color: var(--accent-purple);" id="wTitle">
               📍 NEARBY STOPS
             </div>
-            <div style="font-size: 0.7rem; color: var(--text-muted);" id="wClock">14:27</div>
+            <div style="font-size: 0.7rem; color: var(--text-muted);" id="wClock">14:32</div>
           </div>
 
           <div id="wBody" style="display: flex; flex-direction: column; gap: 6px;">
@@ -832,7 +832,7 @@
             </div>
             <div class="form-row">
               <label>Transfer Stop Name:</label>
-              <input type="text" id="inputTransferName" placeholder="Opp Amber Residences" class="form-input">
+              <input type="text" id="inputTransferName" placeholder="Tanah Merah Stn Exit B" class="form-input">
             </div>
             <div class="form-row">
               <label>Connect Bus & Ride 2:</label>
@@ -850,7 +850,7 @@
             </div>
             <div class="form-row">
               <label>Destination Stop Name:</label>
-              <input type="text" id="inputOfficeName" placeholder="Changi Office" class="form-input">
+              <input type="text" id="inputOfficeName" placeholder="Changi City Pt" class="form-input">
             </div>
           </div>
 
@@ -958,23 +958,21 @@
     });
 
     const busStopLookup = {
-      '84249': 'Blk 124 (Bedok Reservoir)',
-      '84241': 'Blk 81 (Bedok Reservoir)',
-      '85091': 'Opp Amber Residences',
-      '96381': 'Changi Business Park',
-      '84009': 'Bedok Bus Interchange',
-      '02051': 'Opp Ritz-Carlton',
-      '02049': 'Raffles Hotel',
-      '04169': 'City Hall Stn Exit B',
-      '03218': 'Dhoby Ghaut Stn Exit B',
-      '08057': 'Plaza Singapura',
-      '20251': 'Jurong East Int',
-      '17009': 'Clementi Int'
+      '84201': 'Bedok Resvr Stn Exit A',
+      '84209': 'Bedok Resvr Stn Exit B',
+      '84249': 'Blk 124',
+      '84241': 'Blk 81',
+      '85099': 'Tanah Merah Stn Exit A',
+      '85091': 'Tanah Merah Stn Exit B',
+      '96381': 'Changi City Pt',
+      '96389': 'Opp Changi City Pt',
+      '84009': 'Bedok Int'
     };
 
+    // STRICT: RESOLVE NAMES FROM STOP LOOKUP DICTIONARY ONLY
     function getBusStopName(code, customName) {
+      if (code && busStopLookup[code]) return busStopLookup[code];
       if (customName && customName.trim() !== '') return customName;
-      if (busStopLookup[code]) return busStopLookup[code];
       return `Stop ${code}`;
     }
 
@@ -985,13 +983,13 @@
         id: 'r1',
         name: '🏢 Morning Office',
         originStopCode: '84241',
-        originStopName: 'Blk 81 (Home)',
+        originStopName: 'Blk 81',
         originBusNo: '14',
         transferStopCode: '85091',
-        transferStopName: 'Transfer (Amber Rd)',
+        transferStopName: 'Tanah Merah Stn Exit B',
         transferBusNo: '47',
         officeStopCode: '96381',
-        officeStopName: 'Office (Changi)',
+        officeStopName: 'Changi City Pt',
         ride1Min: 12,
         ride2Min: 18,
         activeDays: [1, 2, 3, 4, 5],
@@ -1002,13 +1000,13 @@
         id: 'r2',
         name: '🏠 Evening Home',
         originStopCode: '96381',
-        originStopName: 'Office (Changi)',
+        originStopName: 'Changi City Pt',
         originBusNo: '47',
         transferStopCode: '85091',
-        transferStopName: 'Transfer (Amber Rd)',
+        transferStopName: 'Tanah Merah Stn Exit B',
         transferBusNo: '14',
         officeStopCode: '84241',
-        officeStopName: 'Blk 81 (Home)',
+        officeStopName: 'Blk 81',
         ride1Min: 18,
         ride2Min: 12,
         activeDays: [1, 2, 3, 4, 5],
@@ -1173,15 +1171,15 @@
       document.getElementById('formRouteId').value = r.id;
       document.getElementById('inputRouteName').value = r.name;
       document.getElementById('inputOriginStop').value = r.originStopCode;
-      document.getElementById('inputOriginName').value = r.originStopName || '';
+      document.getElementById('inputOriginName').value = getBusStopName(r.originStopCode, r.originStopName);
       document.getElementById('inputOriginBus').value = r.originBusNo;
       document.getElementById('inputRide1').value = r.ride1Min;
       document.getElementById('inputTransferStop').value = r.transferStopCode;
-      document.getElementById('inputTransferName').value = r.transferStopName || '';
+      document.getElementById('inputTransferName').value = getBusStopName(r.transferStopCode, r.transferStopName);
       document.getElementById('inputTransferBus').value = r.transferBusNo;
       document.getElementById('inputRide2').value = r.ride2Min;
       document.getElementById('inputOfficeStop').value = r.officeStopCode;
-      document.getElementById('inputOfficeName').value = r.officeStopName || '';
+      document.getElementById('inputOfficeName').value = getBusStopName(r.officeStopCode, r.officeStopName);
       document.getElementById('inputStartHour').value = r.startHour !== undefined ? r.startHour : 10;
       document.getElementById('inputEndHour').value = r.endHour !== undefined ? r.endHour : 12;
 
@@ -1312,6 +1310,7 @@
             { ServiceNo: '14', NextBus: makeBus(4), NextBus2: makeBus(15), NextBus3: makeBus(27) },
             { ServiceNo: '28', NextBus: makeBus(2), NextBus2: makeBus(11), NextBus3: makeBus(20) },
             { ServiceNo: '45', NextBus: makeBus(6), NextBus2: makeBus(18), NextBus3: makeBus(30) },
+            { ServiceNo: '46', NextBus: makeBus(5), NextBus2: makeBus(16), NextBus3: makeBus(28) },
             { ServiceNo: '67', NextBus: makeBus(1), NextBus2: makeBus(9), NextBus3: makeBus(19) },
             { ServiceNo: '168', NextBus: makeBus(5), NextBus2: makeBus(14), NextBus3: makeBus(25) },
             { ServiceNo: '222', NextBus: makeBus(3), NextBus2: makeBus(10), NextBus3: makeBus(22) }
@@ -1400,7 +1399,9 @@
     }
 
     function renderWeekendWidgetPreview(services1, services2) {
-      document.getElementById('wTitle').textContent = "📍 BLK 124 & BLK 81";
+      const name1 = getBusStopName('84249');
+      const name2 = getBusStopName('84241');
+      document.getElementById('wTitle').textContent = `📍 ${name1.toUpperCase()} & ${name2.toUpperCase()}`;
       document.getElementById('wClock').textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
       
       const wBody = document.getElementById('wBody');
@@ -1408,8 +1409,8 @@
       wBody.innerHTML = '';
       
       const combined = [
-        ...(services1 || []).slice(0, 2).map(s => ({ ...s, stopLabel: '124' })),
-        ...(services2 || []).slice(0, 2).map(s => ({ ...s, stopLabel: '81' }))
+        ...(services1 || []).slice(0, 2).map(s => ({ ...s, stopLabel: name1 })),
+        ...(services2 || []).slice(0, 2).map(s => ({ ...s, stopLabel: name2 }))
       ];
 
       combined.forEach(s => {
@@ -1441,15 +1442,18 @@
 
       // TAB 1: DEFAULT NEARBY STOPS MODE (84249 & 84241)
       if (currentMainTab === 'nearby') {
-        document.getElementById('heroRouteName').textContent = "📍 NEARBY HOME BUS STOPS (BLK 124 & BLK 81)";
-        document.getElementById('heroEta').textContent = "Blk 124 (84249) • Blk 81 (84241)";
+        const name84249 = getBusStopName('84249');
+        const name84241 = getBusStopName('84241');
+
+        document.getElementById('heroRouteName').textContent = `📍 NEARBY STOPS (${name84249.toUpperCase()} & ${name84241.toUpperCase()})`;
+        document.getElementById('heroEta').textContent = `${name84249} (84249) • ${name84241} (84241)`;
         pill.className = "status-pill pill-green";
-        pill.innerHTML = `🟢 Live Nearby Arrival Sequences (Blk 124 & Blk 81)`;
+        pill.innerHTML = `🟢 Live Nearby Arrival Sequences (${name84249} & ${name84241})`;
 
         grid.innerHTML = `
           <div class="stop-card">
             <div class="stop-card-header">
-              <div class="custom-name-display">Blk 124 (Bedok Reservoir Rd)</div>
+              <div class="custom-name-display">${name84249}</div>
               <span class="stop-code-badge">Stop 84249</span>
             </div>
             <div class="bus-live-list" id="listStop84249"></div>
@@ -1457,7 +1461,7 @@
 
           <div class="stop-card">
             <div class="stop-card-header">
-              <div class="custom-name-display">Blk 81 (Bedok Reservoir Rd)</div>
+              <div class="custom-name-display">${name84241}</div>
               <span class="stop-code-badge">Stop 84241</span>
             </div>
             <div class="bus-live-list" id="listStop84241"></div>
@@ -1469,7 +1473,7 @@
         const init84249 = getFallbackDataForStop('84249');
         const init84241 = getFallbackDataForStop('84241');
 
-        renderStopLiveView('listStop84249', init84249.Services, ['14', '222'], 99);
+        renderStopLiveView('listStop84249', init84249.Services, ['46', '14', '222'], 99);
         renderStopLiveView('listStop84241', init84241.Services, ['14', '47'], 99);
         renderWeekendWidgetPreview(init84249.Services, init84241.Services);
 
@@ -1481,7 +1485,7 @@
         const live84249 = (d84249 && d84249.Services && d84249.Services.length > 0) ? d84249 : init84249;
         const live84241 = (d84241 && d84241.Services && d84241.Services.length > 0) ? d84241 : init84241;
 
-        renderStopLiveView('listStop84249', live84249.Services, ['14', '222'], 99);
+        renderStopLiveView('listStop84249', live84249.Services, ['46', '14', '222'], 99);
         renderStopLiveView('listStop84241', live84241.Services, ['14', '47'], 99);
         renderWeekendWidgetPreview(live84249.Services, live84241.Services);
 
@@ -1500,7 +1504,7 @@
       const transferStopName = getBusStopName(activeRoute.transferStopCode, activeRoute.transferStopName);
       const officeStopName = getBusStopName(activeRoute.officeStopCode, activeRoute.officeStopName);
 
-      // Update Node Card Names
+      // Update Node Card Names strictly from stopLookup
       document.getElementById('vOrigName').textContent = originStopName;
       document.getElementById('vTransName').textContent = transferStopName;
       document.getElementById('vOfficeName').textContent = officeStopName;
@@ -1717,12 +1721,12 @@ async function createWidget() {
     w.addSpacer(4);
 
     const [d124, d81] = await Promise.all([fetchStop("84249"), fetchStop("84241")]);
-    const s124 = d124?.Services?.find(s => s.ServiceNo === "14");
+    const s124 = d124?.Services?.find(s => s.ServiceNo === "46");
     const s81 = d81?.Services?.find(s => s.ServiceNo === "14");
 
     const row1 = w.addStack();
     row1.centerAlignContent();
-    const r1L = row1.addText("🚏 Blk 124 (14): ");
+    const r1L = row1.addText("🚏 Blk 124 (46): ");
     r1L.font = Font.systemFont(11); r1L.textColor = new Color("#94a3b8");
     row1.addSpacer();
     const m124 = [calcMin(s124?.NextBus?.EstimatedArrival), calcMin(s124?.NextBus2?.EstimatedArrival)].filter(x => x !== "-").join(" • ");
