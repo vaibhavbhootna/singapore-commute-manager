@@ -2,13 +2,13 @@
   "nearbyStops": [
     {
       "code": "84249",
-      "name": "Blk 124 (Bedok Reservoir Rd)",
-      "importantBuses": ["14", "222"]
+      "name": "Blk 124",
+      "importantBuses": ["46"]
     },
     {
       "code": "84241",
-      "name": "Blk 81 (Bedok Reservoir Rd)",
-      "importantBuses": ["14", "47"]
+      "name": "Blk 81",
+      "importantBuses": ["14"]
     }
   ],
   "commuteRoutes": [
@@ -36,7 +36,7 @@
       "originStopName": "Office (Changi)",
       "originBusNo": "47",
       "transferStopCode": "85091",
-      "transferStopName": "Transfer (Amber Rd)",
+      "transferStopName": "Tanah Merah",
       "transferBusNo": "14",
       "officeStopCode": "84241",
       "officeStopName": "Blk 81 (Home)",
