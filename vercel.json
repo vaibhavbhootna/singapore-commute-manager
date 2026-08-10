@@ -4,6 +4,10 @@
     {
       "source": "/api/bus-arrival",
       "destination": "/api/bus-arrival.js"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ],
   "headers": [
