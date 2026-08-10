@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Singapore Commute Manager - Clean Dashboard Default</title>
+  <title>Singapore Commute Manager</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -34,7 +34,7 @@
       background: var(--bg-gradient);
       color: var(--text-primary);
       min-height: 100vh;
-      padding: 24px 16px;
+      padding: 20px 16px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -48,47 +48,47 @@
       gap: 16px;
     }
 
-    /* Header Bar */
+    /* Clean Header Bar */
     header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 14px 20px;
+      padding: 12px 18px;
       background: rgba(255, 255, 255, 0.04);
       backdrop-filter: blur(16px);
       border: 1px solid var(--card-border);
-      border-radius: 20px;
+      border-radius: 18px;
     }
 
     .logo-group {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
     }
 
     .bus-icon-badge {
-      width: 40px;
-      height: 40px;
+      width: 36px;
+      height: 36px;
       background: linear-gradient(135deg, #0284c7, #2563eb);
-      border-radius: 12px;
+      border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 22px;
-      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4);
+      font-size: 20px;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
     }
 
     .logo-title {
-      font-size: 1.2rem;
+      font-size: 1.15rem;
       font-weight: 800;
       letter-spacing: -0.02em;
     }
 
     .live-clock {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       background: rgba(0, 0, 0, 0.3);
-      padding: 6px 14px;
+      padding: 6px 12px;
       border-radius: 99px;
       border: 1px solid rgba(255, 255, 255, 0.08);
       color: var(--accent-blue);
@@ -137,8 +137,8 @@
       background: var(--card-bg);
       backdrop-filter: blur(16px);
       border: 1px solid var(--card-border);
-      border-radius: 20px;
-      padding: 12px 18px;
+      border-radius: 18px;
+      padding: 10px 16px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -157,28 +157,20 @@
       background: rgba(255, 255, 255, 0.06);
       border: 1px solid rgba(255, 255, 255, 0.12);
       color: var(--text-secondary);
-      padding: 8px 14px;
-      border-radius: 12px;
-      font-size: 0.85rem;
+      padding: 6px 12px;
+      border-radius: 10px;
+      font-size: 0.82rem;
       font-weight: 700;
       cursor: pointer;
       white-space: nowrap;
       transition: all 0.2s ease;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .chip-btn:hover {
-      background: rgba(255, 255, 255, 0.12);
-      color: #fff;
     }
 
     .chip-btn.active {
       background: linear-gradient(135deg, #0284c7, #2563eb);
       color: #fff;
       border-color: #38bdf8;
-      box-shadow: 0 4px 14px rgba(2, 132, 199, 0.4);
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.4);
     }
 
     .btn {
@@ -186,15 +178,14 @@
       color: #fff;
       border: none;
       border-radius: 10px;
-      padding: 8px 16px;
+      padding: 8px 14px;
       font-weight: 700;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 6px;
       transition: all 0.2s ease;
-      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
     }
 
     .btn:hover {
@@ -222,20 +213,20 @@
       color: var(--accent-purple);
       background: rgba(192, 132, 252, 0.15);
       border: 1px solid rgba(192, 132, 252, 0.3);
-      padding: 6px 14px;
+      padding: 6px 12px;
       border-radius: 99px;
     }
 
-    /* Hero Banner */
+    /* Minimal Hero Banner */
     .hero-banner {
       background: linear-gradient(135deg, rgba(30, 27, 75, 0.95), rgba(15, 23, 42, 0.95));
       border: 1px solid rgba(192, 132, 252, 0.35);
-      border-radius: 20px;
-      padding: 20px;
+      border-radius: 18px;
+      padding: 16px;
       display: flex;
       flex-direction: column;
-      gap: 14px;
-      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6);
+      gap: 10px;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5);
     }
 
     .hero-top-row {
@@ -245,30 +236,21 @@
     }
 
     .hero-label {
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       font-weight: 800;
       color: var(--accent-purple);
       text-transform: uppercase;
       letter-spacing: 0.08em;
     }
 
-    .office-eta {
-      font-size: 2.2rem;
-      font-weight: 900;
-      color: #fff;
-      font-family: 'JetBrains Mono', monospace;
-      line-height: 1.1;
-      letter-spacing: -0.03em;
-    }
-
     .status-pill {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 8px 16px;
+      padding: 6px 14px;
       border-radius: 99px;
       font-weight: 800;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
     }
 
     .pill-green {
@@ -297,15 +279,15 @@
       gap: 12px;
       background: rgba(15, 23, 42, 0.85);
       border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 18px;
-      padding: 16px 20px;
+      border-radius: 16px;
+      padding: 14px 16px;
     }
 
     @media (max-width: 640px) {
       .journey-nodes-grid {
         flex-direction: column;
         align-items: flex-start;
-        gap: 16px;
+        gap: 14px;
       }
     }
 
@@ -316,18 +298,17 @@
       background: rgba(30, 41, 59, 0.7);
       border: 1px solid rgba(255, 255, 255, 0.1);
       padding: 10px 14px;
-      border-radius: 14px;
-      min-width: 140px;
+      border-radius: 12px;
+      min-width: 130px;
     }
 
     .node-pill {
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       font-weight: 800;
-      padding: 2px 8px;
+      padding: 2px 6px;
       border-radius: 6px;
       width: fit-content;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
     }
 
     .pill-origin { background: rgba(2, 132, 199, 0.25); color: #38bdf8; border: 1px solid rgba(2, 132, 199, 0.4); }
@@ -336,12 +317,12 @@
 
     .node-main-name {
       font-weight: 800;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       color: #fff;
     }
 
     .node-bus-badge {
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       font-weight: 800;
       color: #38bdf8;
       font-family: 'JetBrains Mono', monospace;
@@ -352,16 +333,16 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 6px;
+      gap: 4px;
       width: 100%;
     }
 
     .segment-pill {
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       font-weight: 800;
       background: rgba(0, 0, 0, 0.4);
       border: 1px solid rgba(255, 255, 255, 0.12);
-      padding: 4px 10px;
+      padding: 3px 8px;
       border-radius: 99px;
       color: var(--accent-purple);
       white-space: nowrap;
@@ -369,13 +350,12 @@
 
     .segment-line {
       width: 100%;
-      height: 4px;
+      height: 3px;
       background: linear-gradient(90deg, #38bdf8, #c084fc, #22c55e);
       border-radius: 99px;
-      box-shadow: 0 0 8px rgba(56, 189, 248, 0.4);
     }
 
-    /* Cards & Sequence Grid */
+    /* Clean Cards Grid */
     .stops-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -386,8 +366,8 @@
       background: var(--card-bg);
       backdrop-filter: blur(16px);
       border: 1px solid var(--card-border);
-      border-radius: 20px;
-      padding: 18px;
+      border-radius: 18px;
+      padding: 16px;
       display: flex;
       flex-direction: column;
       gap: 12px;
@@ -396,13 +376,13 @@
     .stop-card-header {
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
+      align-items: center;
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
       padding-bottom: 8px;
     }
 
     .custom-name-display {
-      font-size: 1rem;
+      font-size: 0.98rem;
       font-weight: 800;
       color: #fff;
     }
@@ -428,30 +408,16 @@
       align-items: center;
       justify-content: space-between;
       background: rgba(15, 23, 42, 0.6);
-      padding: 10px 14px;
-      border-radius: 12px;
+      padding: 9px 12px;
+      border-radius: 10px;
       border: 1px solid rgba(255, 255, 255, 0.06);
     }
 
-    .bus-arrival-item.is-important-bus {
-      background: linear-gradient(135deg, rgba(192, 132, 252, 0.2), rgba(56, 189, 248, 0.2));
-      border: 1px solid rgba(192, 132, 252, 0.5);
-    }
-
     .svc-tag {
-      font-size: 1.25rem;
+      font-size: 1.2rem;
       font-weight: 900;
       color: #fff;
       font-family: 'JetBrains Mono', monospace;
-    }
-
-    .important-badge {
-      font-size: 0.65rem;
-      font-weight: 800;
-      background: linear-gradient(135deg, #c084fc, #9333ea);
-      color: #fff;
-      padding: 2px 6px;
-      border-radius: 4px;
     }
 
     .bus-sequence-badges {
@@ -461,10 +427,10 @@
     }
 
     .time-badge {
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       font-weight: 800;
-      padding: 4px 10px;
-      border-radius: 8px;
+      padding: 4px 8px;
+      border-radius: 6px;
       background: rgba(34, 197, 94, 0.2);
       border: 1px solid rgba(34, 197, 94, 0.4);
       color: #4ade80;
@@ -477,10 +443,10 @@
     }
 
     .sub-badge {
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       font-weight: 700;
       padding: 4px 8px;
-      border-radius: 8px;
+      border-radius: 6px;
       background: rgba(255, 255, 255, 0.06);
       border: 1px solid rgba(255, 255, 255, 0.12);
       color: var(--text-secondary);
@@ -491,13 +457,13 @@
     .ios-medium-widget-frame {
       background: linear-gradient(145deg, rgba(15, 23, 42, 0.98), rgba(30, 41, 59, 0.98));
       border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 24px;
-      padding: 16px;
+      border-radius: 20px;
+      padding: 14px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6);
-      font-size: 0.82rem;
+      gap: 8px;
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.6);
+      font-size: 0.8rem;
     }
 
     .ios-w-header {
@@ -518,23 +484,23 @@
     .widget-code-card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      border-radius: 20px;
-      padding: 20px;
+      border-radius: 18px;
+      padding: 16px;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
     }
 
     pre {
       background: rgba(15, 23, 42, 0.9);
       border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 12px;
-      padding: 14px;
+      border-radius: 10px;
+      padding: 12px;
       overflow-x: auto;
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.78rem;
       color: #e2e8f0;
-      max-height: 220px;
+      max-height: 200px;
     }
 
     /* Modal Dialog Styling */
@@ -556,16 +522,16 @@
     .modal-card {
       background: rgba(30, 41, 59, 0.95);
       border: 1px solid var(--card-border);
-      border-radius: 24px;
-      max-width: 620px;
+      border-radius: 20px;
+      max-width: 600px;
       width: 100%;
       max-height: 90vh;
       overflow-y: auto;
-      padding: 24px;
-      box-shadow: 0 24px 48px rgba(0,0,0,0.8);
+      padding: 20px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.8);
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 14px;
     }
 
     .modal-header {
@@ -573,16 +539,16 @@
       justify-content: space-between;
       align-items: center;
       border-bottom: 1px solid rgba(255,255,255,0.1);
-      padding-bottom: 12px;
+      padding-bottom: 10px;
     }
 
     .close-modal-btn {
       background: rgba(255,255,255,0.08);
       border: none;
       color: #fff;
-      font-size: 1.4rem;
-      width: 32px;
-      height: 32px;
+      font-size: 1.3rem;
+      width: 30px;
+      height: 30px;
       border-radius: 50%;
       cursor: pointer;
     }
@@ -591,20 +557,20 @@
       background: rgba(15, 23, 42, 0.8);
       border: 1px solid rgba(255, 255, 255, 0.15);
       color: #fff;
-      padding: 9px 12px;
-      border-radius: 10px;
-      font-size: 0.88rem;
+      padding: 8px 10px;
+      border-radius: 8px;
+      font-size: 0.85rem;
       width: 100%;
     }
 
     .form-row {
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 4px;
     }
 
     .form-row label {
-      font-size: 0.78rem;
+      font-size: 0.75rem;
       font-weight: 700;
       color: var(--text-secondary);
     }
@@ -624,15 +590,14 @@
     .day-checkbox-label {
       background: rgba(15, 23, 42, 0.8);
       border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 8px;
-      padding: 6px 10px;
-      font-size: 0.82rem;
+      border-radius: 6px;
+      padding: 5px 8px;
+      font-size: 0.78rem;
       color: #fff;
       cursor: pointer;
       display: flex;
       align-items: center;
       gap: 6px;
-      user-select: none;
     }
 
     .day-checkbox-label input {
@@ -645,8 +610,8 @@
       align-items: center;
       justify-content: space-between;
       background: rgba(15, 23, 42, 0.6);
-      padding: 10px 14px;
-      border-radius: 12px;
+      padding: 10px 12px;
+      border-radius: 10px;
       border: 1px solid rgba(255, 255, 255, 0.08);
     }
   </style>
@@ -654,17 +619,15 @@
 <body>
 
   <div class="container">
-    <!-- Header Bar -->
+    <!-- Clean Header Bar -->
     <header>
       <div class="logo-group">
         <div class="bus-icon-badge">🚌</div>
-        <div>
-          <div class="logo-title">Singapore Commute Manager</div>
-        </div>
+        <div class="logo-title">Singapore Commute Manager</div>
       </div>
       <div style="display: flex; align-items: center; gap: 10px;">
         <button class="btn btn-secondary" id="toggleDashboardModeBtn">📱 Show Widget & Code</button>
-        <div class="live-clock" id="clock">14:34:00 SGT</div>
+        <div class="live-clock" id="clock">14:35 SGT</div>
       </div>
     </header>
 
@@ -674,112 +637,95 @@
       <button class="main-tab-btn" id="tabConnectionsBtn">🔄 Commute Connections & Predictor</button>
     </div>
 
-    <!-- Connections Tab Control Bar (Only Visible in Connections Tab) -->
+    <!-- Connections Tab Control Bar -->
     <div class="connection-toolbar" id="connectionToolbar" style="display: none;">
-      <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+      <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
         <div class="schedule-badge-bar" id="scheduleStatusText">
           ⏰ Auto-Schedule: Active
         </div>
-        <div class="route-chips" id="routeChipsContainer">
-          <!-- Rendered dynamically -->
-        </div>
+        <div class="route-chips" id="routeChipsContainer"></div>
       </div>
-      <div style="display: flex; gap: 8px;">
-        <button class="btn btn-secondary" id="toggleAutoScheduleBtn">⚡ Auto-Schedule: ON</button>
-        <button class="btn" id="openScheduleManagerBtn">📅 Schedule Manager</button>
+      <div style="display: flex; gap: 6px;">
+        <button class="btn btn-secondary" id="toggleAutoScheduleBtn">⚡ Auto: ON</button>
+        <button class="btn" id="openScheduleManagerBtn">📅 Schedules</button>
       </div>
     </div>
 
-    <!-- Main Hero Banner -->
+    <!-- Hero Banner -->
     <div class="hero-banner">
       <div class="hero-top-row">
-        <span class="hero-label" id="heroRouteName">📍 NEARBY BUS STOPS (BLK 124 & BLK 81)</span>
-        <button class="btn" id="refreshBtn" style="padding: 6px 12px; font-size: 0.8rem;">🔄 Refresh Live</button>
+        <span class="hero-label" id="heroRouteName">📍 NEARBY HOME STOPS</span>
+        <button class="btn" id="refreshBtn" style="padding: 4px 10px; font-size: 0.78rem;">🔄 Refresh</button>
       </div>
 
-      <div class="office-eta" id="heroEta">Blk 124 (84249) • Blk 81 (84241)</div>
-
-      <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px;">
-        <div class="status-pill pill-green" id="heroPill">🟢 Live Nearby Bus Arrival Sequences</div>
+      <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px;">
+        <div class="status-pill pill-green" id="heroPill">🟢 Live Bus Sequences</div>
         <span style="font-size: 0.75rem; color: var(--text-muted);" id="lastSyncTime">Refreshed just now</span>
       </div>
 
-      <!-- Modern Journey Node Grid (Visible in Connection Mode) -->
+      <!-- Connection Flow Diagram -->
       <div class="journey-nodes-grid" id="visualJourneyContainer" style="display: none;">
-        
-        <!-- Node 1: Start -->
         <div class="journey-card-node">
           <div class="node-pill pill-origin">🏠 Start</div>
           <div class="node-main-name" id="vOrigName">Blk 81</div>
           <div class="node-bus-badge" id="vBus1Badge">Bus 14 • Arr</div>
         </div>
 
-        <!-- Segment 1 -->
         <div class="journey-segment">
           <div class="segment-pill" id="vRide1Pill">🚌 Ride 1 (12m)</div>
           <div class="segment-line"></div>
         </div>
 
-        <!-- Node 2: Transfer -->
         <div class="journey-card-node">
           <div class="node-pill pill-transfer">🔄 Transfer</div>
-          <div class="node-main-name" id="vTransName">Amber Rd</div>
+          <div class="node-main-name" id="vTransName">Tanah Merah</div>
           <div class="node-bus-badge" id="vBus2Badge">Bus 47 • 5m</div>
         </div>
 
-        <!-- Segment 2 -->
         <div class="journey-segment">
           <div class="segment-pill" id="vRide2Pill">🚌 Ride 2 (18m)</div>
           <div class="segment-line"></div>
         </div>
 
-        <!-- Node 3: Destination -->
         <div class="journey-card-node">
           <div class="node-pill pill-office">🏢 Office</div>
-          <div class="node-main-name" id="vOfficeName">Changi Office</div>
+          <div class="node-main-name" id="vOfficeName">Changi City Pt</div>
           <div class="node-bus-badge" id="vOfficeEtaText" style="color: var(--accent-green);">ETA 10:48 AM</div>
         </div>
-
       </div>
 
     </div>
 
     <!-- Live Arrival Cards Grid -->
-    <div class="stops-grid" id="mainStopsGrid">
-      <!-- Rendered dynamically -->
-    </div>
+    <div class="stops-grid" id="mainStopsGrid"></div>
 
-    <!-- iPhone Widget Preview & Code Grid (Hidable in Dashboard Only Mode) -->
+    <!-- iPhone Widget Preview Grid (Hidden by Default) -->
     <div id="widgetPreviewSection" style="display: none;">
-      
       <div class="stop-card">
         <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 8px;">
-          <div style="font-weight: 700; font-size: 0.95rem; color: #fff;">📱 Live iPhone Widget Preview</div>
-          <span style="font-size: 0.75rem; color: var(--text-secondary);">Medium Layout</span>
+          <div style="font-weight: 700; font-size: 0.9rem; color: #fff;">📱 Live iPhone Widget Preview</div>
+          <span style="font-size: 0.75rem; color: var(--text-secondary);">Medium</span>
         </div>
 
         <div class="ios-medium-widget-frame">
           <div class="ios-w-header">
-            <div style="display: flex; align-items: center; gap: 6px; font-weight: 700; font-size: 0.85rem; color: var(--accent-purple);" id="wTitle">
+            <div style="display: flex; align-items: center; gap: 6px; font-weight: 700; font-size: 0.82rem; color: var(--accent-purple);" id="wTitle">
               📍 NEARBY STOPS
             </div>
-            <div style="font-size: 0.7rem; color: var(--text-muted);" id="wClock">14:34</div>
+            <div style="font-size: 0.7rem; color: var(--text-muted);" id="wClock">14:35</div>
           </div>
 
-          <div id="wBody" style="display: flex; flex-direction: column; gap: 6px;">
-            <!-- Rendered via JS -->
-          </div>
+          <div id="wBody" style="display: flex; flex-direction: column; gap: 6px;"></div>
         </div>
       </div>
 
       <div class="widget-code-card">
         <div style="display: flex; justify-content: space-between; align-items: center;">
-          <div style="font-weight: 700; font-size: 0.95rem; color: #fff;">📋 Scriptable iPhone Widget Code</div>
-          <button class="btn" style="padding: 4px 10px; font-size: 0.75rem;" id="copyCodeBtn">📋 Copy Script</button>
+          <div style="font-weight: 700; font-size: 0.9rem; color: #fff;">📋 Scriptable Code</div>
+          <button class="btn" style="padding: 4px 8px; font-size: 0.75rem;" id="copyCodeBtn">📋 Copy</button>
         </div>
-        <pre id="codeDisplay">// Loading widget script...</pre>
+        <pre id="codeDisplay">// Loading script...</pre>
       </div>
-
     </div>
   </div>
 
@@ -787,24 +733,20 @@
   <div class="modal-overlay" id="scheduleModal" style="display: none;">
     <div class="modal-card">
       <div class="modal-header">
-        <div style="font-weight: 800; font-size: 1.15rem; color: #fff;">📅 Schedule & Route Manager</div>
+        <div style="font-weight: 800; font-size: 1.1rem; color: #fff;">📅 Schedule & Route Manager</div>
         <button class="close-modal-btn" id="closeScheduleModalBtn">&times;</button>
       </div>
 
-      <!-- Saved Routes List -->
-      <div style="display: flex; flex-direction: column; gap: 8px;" id="savedRoutesList">
-        <!-- Rendered via JS -->
-      </div>
+      <div style="display: flex; flex-direction: column; gap: 8px;" id="savedRoutesList"></div>
 
-      <!-- Add / Edit Route Form -->
-      <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 14px; margin-top: 6px;">
-        <div style="font-weight: 700; color: var(--accent-purple); margin-bottom: 10px;" id="formTitle">➕ Add New Route Schedule</div>
-        <form id="routeForm" style="display: flex; flex-direction: column; gap: 10px;">
+      <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 12px; margin-top: 4px;">
+        <div style="font-weight: 700; color: var(--accent-purple); margin-bottom: 8px;" id="formTitle">➕ Add Route Schedule</div>
+        <form id="routeForm" style="display: flex; flex-direction: column; gap: 8px;">
           <input type="hidden" id="formRouteId">
           
           <div class="form-row">
             <label>Route Name:</label>
-            <input type="text" id="inputRouteName" placeholder="e.g. 🏢 Morning Office" required class="form-input">
+            <input type="text" id="inputRouteName" placeholder="🏢 Morning Office" required class="form-input">
           </div>
 
           <div class="form-grid-3">
@@ -817,10 +759,10 @@
               <input type="text" id="inputOriginName" placeholder="Blk 81" class="form-input">
             </div>
             <div class="form-row">
-              <label>Bus No & Ride 1:</label>
+              <label>Bus & Ride 1:</label>
               <div style="display:flex; gap:4px;">
                 <input type="text" id="inputOriginBus" placeholder="14" required class="form-input" style="width:50%;">
-                <input type="number" id="inputRide1" placeholder="12m" value="12" required class="form-input" style="width:50%;">
+                <input type="number" id="inputRide1" placeholder="12" value="12" required class="form-input" style="width:50%;">
               </div>
             </div>
           </div>
@@ -832,31 +774,31 @@
             </div>
             <div class="form-row">
               <label>Transfer Stop Name:</label>
-              <input type="text" id="inputTransferName" placeholder="Tanah Merah Stn Exit B" class="form-input">
+              <input type="text" id="inputTransferName" placeholder="Tanah Merah" class="form-input">
             </div>
             <div class="form-row">
               <label>Connect Bus & Ride 2:</label>
               <div style="display:flex; gap:4px;">
                 <input type="text" id="inputTransferBus" placeholder="47" required class="form-input" style="width:50%;">
-                <input type="number" id="inputRide2" placeholder="18m" value="18" required class="form-input" style="width:50%;">
+                <input type="number" id="inputRide2" placeholder="18" value="18" required class="form-input" style="width:50%;">
               </div>
             </div>
           </div>
 
           <div class="form-grid-2">
             <div class="form-row">
-              <label>Destination Stop Code:</label>
+              <label>Destination Code:</label>
               <input type="text" id="inputOfficeStop" placeholder="96381" required class="form-input">
             </div>
             <div class="form-row">
-              <label>Destination Stop Name:</label>
+              <label>Destination Name:</label>
               <input type="text" id="inputOfficeName" placeholder="Changi City Pt" class="form-input">
             </div>
           </div>
 
           <div class="form-row">
-            <label>Active Days (Select Sunday, Weekdays, etc.):</label>
-            <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+            <label>Active Days:</label>
+            <div style="display: flex; gap: 4px; flex-wrap: wrap;">
               <label class="day-checkbox-label"><input type="checkbox" value="1" class="day-cb" checked> Mon</label>
               <label class="day-checkbox-label"><input type="checkbox" value="2" class="day-cb" checked> Tue</label>
               <label class="day-checkbox-label"><input type="checkbox" value="3" class="day-cb" checked> Wed</label>
@@ -868,7 +810,7 @@
           </div>
 
           <div class="form-row">
-            <label>Time Window Hours (24h Format):</label>
+            <label>Time Window (24h):</label>
             <div style="display: flex; gap: 6px; align-items: center;">
               <input type="number" id="inputStartHour" placeholder="10" min="0" max="23" value="10" class="form-input">
               <span style="font-size:0.8rem;">to</span>
@@ -876,8 +818,8 @@
             </div>
           </div>
 
-          <div style="display: flex; gap: 10px; margin-top: 10px;">
-            <button type="submit" class="btn" style="flex: 1;">💾 Save Route Schedule</button>
+          <div style="display: flex; gap: 8px; margin-top: 6px;">
+            <button type="submit" class="btn" style="flex: 1;">💾 Save Route</button>
             <button type="button" class="btn btn-secondary" id="cancelFormBtn">Cancel</button>
           </div>
         </form>
@@ -888,12 +830,11 @@
   <script>
     function updateClock() {
       const now = new Date();
-      document.getElementById('clock').textContent = now.toLocaleTimeString('en-SG', { timeZone: 'Asia/Singapore' }) + ' SGT';
+      document.getElementById('clock').textContent = now.toLocaleTimeString('en-SG', { timeZone: 'Asia/Singapore', hour: '2-digit', minute: '2-digit' }) + ' SGT';
     }
     setInterval(updateClock, 1000);
     updateClock();
 
-    // Main Navigation Tabs (Default: 'nearby' vs 'connections')
     let currentMainTab = 'nearby';
 
     document.getElementById('tabNearbyBtn').addEventListener('click', () => {
@@ -927,7 +868,6 @@
       }
     }
 
-    // Dashboard Only Mode Toggle (DEFAULT: TRUE FOR CLEAN DASHBOARD)
     let isDashboardCleanMode = true;
     try {
       const stored = localStorage.getItem('sg_commute_clean_mode');
@@ -972,7 +912,6 @@
       '84009': 'Bedok Int'
     };
 
-    // STRICT: RESOLVE NAMES FROM STOP LOOKUP DICTIONARY ONLY
     function getBusStopName(code, customName) {
       if (code && busStopLookup[code]) return busStopLookup[code];
       if (customName && customName.trim() !== '') return customName;
@@ -1024,7 +963,6 @@
       if (stored) savedRoutes = JSON.parse(stored);
     } catch(e) {}
 
-    // Load Central JSON Database (public/routes-db.json)
     async function loadJsonDatabase() {
       try {
         const res = await fetch('/public/routes-db.json');
@@ -1061,16 +999,7 @@
       });
 
       if (matchedCommute) {
-        return { isMatchingWindow: true, label: `⏰ Auto Active: ${matchedCommute.name} (${matchedCommute.startHour}:00 - ${matchedCommute.endHour}:00)`, routeId: matchedCommute.id };
-      }
-
-      const upcoming = savedRoutes.find(r => {
-        const days = Array.isArray(r.activeDays) ? r.activeDays.map(Number) : [1,2,3,4,5];
-        return days.includes(day) && (r.startHour > hour);
-      });
-
-      if (upcoming) {
-        return { isMatchingWindow: false, label: `⏸️ Off-Peak (Next: ${upcoming.name} at ${upcoming.startHour}:00)`, routeId: null };
+        return { isMatchingWindow: true, label: `⏰ Auto Active: ${matchedCommute.name}`, routeId: matchedCommute.id };
       }
 
       return { isMatchingWindow: false, label: "⏸️ Off-Peak Hours", routeId: null };
@@ -1099,11 +1028,11 @@
       const scheduleState = getScheduledRouteState();
 
       if (autoScheduleEnabled) {
-        btn.textContent = "⚡ Auto-Schedule: ON";
+        btn.textContent = "⚡ Auto: ON";
         btn.className = "btn";
         statusText.textContent = scheduleState.label;
       } else {
-        btn.textContent = "⚙️ Auto-Schedule: OFF";
+        btn.textContent = "⚙️ Auto: OFF";
         btn.className = "btn btn-secondary";
         statusText.textContent = `⚙️ Manual Mode`;
       }
@@ -1126,7 +1055,6 @@
       }
     }
 
-    // Modal UI logic
     const modal = document.getElementById('scheduleModal');
     document.getElementById('openScheduleManagerBtn').addEventListener('click', () => {
       renderSavedRoutesList();
@@ -1156,7 +1084,7 @@
           <div>
             <div style="font-weight: 800; color: #fff;">${r.name}</div>
             <div style="font-size: 0.75rem; color: var(--accent-purple);">📅 ${daysStr} (${r.startHour || 0}:00 - ${r.endHour || 24}:00)</div>
-            <div style="font-size: 0.75rem; color: var(--text-secondary);">${oName} (Bus ${r.originBusNo}) ➔ ${tName} (Bus ${r.transferBusNo}) ➔ ${dName}</div>
+            <div style="font-size: 0.75rem; color: var(--text-secondary);">${oName} (${r.originBusNo}) ➔ ${tName} (${r.transferBusNo}) ➔ ${dName}</div>
           </div>
           <div style="display: flex; gap: 6px;">
             <button class="btn btn-secondary" style="padding: 4px 8px; font-size: 0.75rem;" onclick="editRoute('${r.id}')">✏️ Edit</button>
@@ -1204,7 +1132,7 @@
     };
 
     function resetRouteForm() {
-      document.getElementById('formTitle').textContent = "➕ Add New Route Schedule";
+      document.getElementById('formTitle').textContent = "➕ Add Route Schedule";
       document.getElementById('formRouteId').value = "";
       document.getElementById('routeForm').reset();
       document.querySelectorAll('.day-cb').forEach(cb => {
@@ -1448,10 +1376,9 @@
         const name84249 = getBusStopName('84249');
         const name84241 = getBusStopName('84241');
 
-        document.getElementById('heroRouteName').textContent = `📍 NEARBY STOPS (${name84249.toUpperCase()} & ${name84241.toUpperCase()})`;
-        document.getElementById('heroEta').textContent = `${name84249} (84249) • ${name84241} (84241)`;
+        document.getElementById('heroRouteName').textContent = `📍 NEARBY HOME STOPS`;
         pill.className = "status-pill pill-green";
-        pill.innerHTML = `🟢 Live Nearby Arrival Sequences (${name84249} & ${name84241})`;
+        pill.innerHTML = `🟢 Live Bus Arrival Sequences (${name84249} & ${name84241})`;
 
         grid.innerHTML = `
           <div class="stop-card">
@@ -1604,7 +1531,7 @@
       const validCombos = [];
 
       originOptions.forEach(orig => {
-        const reachTransferTime = (orig.min <= 0 ? 0 : orig.min) + activeRoute.ride1Min + 2; // +2m margin
+        const reachTransferTime = (orig.min <= 0 ? 0 : orig.min) + activeRoute.ride1Min + 2;
         const catchable = transferOptions.filter(tMin => tMin >= reachTransferTime);
 
         catchable.forEach(tMin => {
@@ -1624,11 +1551,9 @@
         });
       });
 
-      // Sort combinations to find the ABSOLUTE FASTEST (Earliest Destination Arrival)!
       validCombos.sort((a, b) => a.totalDurationMin - b.totalDurationMin);
       const fastest = validCombos[0];
 
-      // Update iPhone Widget Simulation
       document.getElementById('wTitle').textContent = `🏢 ${activeRoute.name.toUpperCase()}`;
       document.getElementById('wClock').textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
@@ -1655,7 +1580,6 @@
       const vOfficeEtaText = document.getElementById('vOfficeEtaText');
 
       if (fastest) {
-        document.getElementById('heroEta').textContent = `${fastest.etaStr}`;
         document.getElementById('wEtaVal').textContent = `ETA: ${fastest.etaStr}`;
         if (vOfficeEtaText) vOfficeEtaText.textContent = `ETA ${fastest.etaStr}`;
 
@@ -1677,7 +1601,6 @@
       } else {
         pill.className = "status-pill pill-red";
         pill.innerHTML = `🔴 NO FEASIBLE CONNECTION AVAILABLE CURRENTLY`;
-        document.getElementById('heroEta').textContent = `Missed`;
         document.getElementById('wEtaVal').textContent = `ETA: Missed`;
         if (vOfficeEtaText) vOfficeEtaText.textContent = `No Connection`;
         if (wBadge) { wBadge.className = 'w-status-badge pill-red'; wBadge.textContent = `🔴 Missed`; }
