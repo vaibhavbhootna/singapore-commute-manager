@@ -1,0 +1,126 @@
+{
+  "odata.metadata": "https://datamall2.mytransport.sg/ltaodataservice/v3/BusArrival",
+  "BusStopCode": "20251",
+  "Services": [
+    {
+      "ServiceNo": "176",
+      "Operator": "SMRT",
+      "NextBus": {
+        "OriginCode": "10009",
+        "DestinationCode": "45009",
+        "EstimatedArrival": "DYNAMIC_OFFSET_2",
+        "Monitored": 1,
+        "Latitude": "1.3100396666666667",
+        "Longitude": "103.75647683333334",
+        "VisitNumber": "1",
+        "Load": "SEA",
+        "Feature": "WAB",
+        "Type": "DD"
+      },
+      "NextBus2": {
+        "OriginCode": "10009",
+        "DestinationCode": "45009",
+        "EstimatedArrival": "DYNAMIC_OFFSET_12",
+        "Monitored": 1,
+        "Latitude": "1.27424",
+        "Longitude": "103.79662333333333",
+        "VisitNumber": "1",
+        "Load": "SEA",
+        "Feature": "WAB",
+        "Type": "DD"
+      },
+      "NextBus3": {
+        "OriginCode": "10009",
+        "DestinationCode": "45009",
+        "EstimatedArrival": "DYNAMIC_OFFSET_21",
+        "Monitored": 1,
+        "Latitude": "1.278829",
+        "Longitude": "103.81719033333333",
+        "VisitNumber": "1",
+        "Load": "SDA",
+        "Feature": "WAB",
+        "Type": "SD"
+      }
+    },
+    {
+      "ServiceNo": "30",
+      "Operator": "SBST",
+      "NextBus": {
+        "OriginCode": "84009",
+        "DestinationCode": "22009",
+        "EstimatedArrival": "DYNAMIC_OFFSET_1",
+        "Monitored": 1,
+        "Latitude": "1.3144378333333333",
+        "Longitude": "103.75299533333333",
+        "VisitNumber": "1",
+        "Load": "SEA",
+        "Feature": "WAB",
+        "Type": "DD"
+      },
+      "NextBus2": {
+        "OriginCode": "84009",
+        "DestinationCode": "22009",
+        "EstimatedArrival": "DYNAMIC_OFFSET_5",
+        "Monitored": 1,
+        "Latitude": "1.3090805",
+        "Longitude": "103.76039283333333",
+        "VisitNumber": "1",
+        "Load": "SDA",
+        "Feature": "WAB",
+        "Type": "SD"
+      },
+      "NextBus3": {
+        "OriginCode": "84009",
+        "DestinationCode": "22009",
+        "EstimatedArrival": "DYNAMIC_OFFSET_18",
+        "Monitored": 1,
+        "Latitude": "1.2757191666666667",
+        "Longitude": "103.793202",
+        "VisitNumber": "1",
+        "Load": "LSD",
+        "Feature": "WAB",
+        "Type": "DD"
+      }
+    },
+    {
+      "ServiceNo": "78",
+      "Operator": "TTS",
+      "NextBus": {
+        "OriginCode": "29009",
+        "DestinationCode": "29009",
+        "EstimatedArrival": "DYNAMIC_OFFSET_4",
+        "Monitored": 1,
+        "Latitude": "1.3087378333333333",
+        "Longitude": "103.73379016666667",
+        "VisitNumber": "1",
+        "Load": "SEA",
+        "Feature": "WAB",
+        "Type": "DD"
+      },
+      "NextBus2": {
+        "OriginCode": "29009",
+        "DestinationCode": "29009",
+        "EstimatedArrival": "DYNAMIC_OFFSET_26",
+        "Monitored": 1,
+        "Latitude": "1.312363",
+        "Longitude": "103.76434116666667",
+        "VisitNumber": "1",
+        "Load": "SEA",
+        "Feature": "WAB",
+        "Type": "DD"
+      },
+      "NextBus3": {
+        "OriginCode": "",
+        "DestinationCode": "",
+        "EstimatedArrival": "",
+        "Monitored": 0,
+        "Latitude": "",
+        "Longitude": "",
+        "VisitNumber": "",
+        "Load": "",
+        "Feature": "",
+        "Type": ""
+      }
+    }
+  ]
+}

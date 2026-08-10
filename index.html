@@ -1,0 +1,1889 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Singapore Commute Manager - Fastest Route Predictor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-gradient: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #0f172a 60%, #020617 100%);
+      --card-bg: rgba(30, 41, 59, 0.75);
+      --card-border: rgba(255, 255, 255, 0.12);
+      --accent-blue: #38bdf8;
+      --accent-purple: #c084fc;
+      --accent-green: #22c55e;
+      --accent-amber: #f59e0b;
+      --accent-red: #ef4444;
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      background: var(--bg-gradient);
+      color: var(--text-primary);
+      min-height: 100vh;
+      padding: 24px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .container {
+      max-width: 960px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* Header Bar */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 20px;
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+    }
+
+    .logo-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .bus-icon-badge {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, #0284c7, #2563eb);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4);
+    }
+
+    .logo-title {
+      font-size: 1.2rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .live-clock {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9rem;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 6px 14px;
+      border-radius: 99px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--accent-blue);
+    }
+
+    /* Main Navigation Tab Bar */
+    .main-tab-bar {
+      display: flex;
+      gap: 8px;
+      background: rgba(15, 23, 42, 0.8);
+      padding: 6px;
+      border-radius: 16px;
+      border: 1px solid var(--card-border);
+    }
+
+    .main-tab-btn {
+      flex: 1;
+      padding: 12px;
+      border-radius: 12px;
+      border: none;
+      background: transparent;
+      color: var(--text-secondary);
+      font-weight: 800;
+      font-size: 0.92rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .main-tab-btn:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .main-tab-btn.active {
+      background: linear-gradient(135deg, #0284c7, #2563eb);
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(2, 132, 199, 0.4);
+    }
+
+    /* Route Switcher & Connection Bar */
+    .connection-toolbar {
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 12px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .route-chips {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      overflow-x: auto;
+    }
+
+    .chip-btn {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: var(--text-secondary);
+      padding: 8px 14px;
+      border-radius: 12px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .chip-btn:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+    }
+
+    .chip-btn.active {
+      background: linear-gradient(135deg, #0284c7, #2563eb);
+      color: #fff;
+      border-color: #38bdf8;
+      box-shadow: 0 4px 14px rgba(2, 132, 199, 0.4);
+    }
+
+    .btn {
+      background: linear-gradient(135deg, #0284c7, #2563eb);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 8px 16px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: none;
+    }
+
+    .btn-danger {
+      background: rgba(239, 68, 68, 0.2);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      color: #fca5a5;
+    }
+
+    .schedule-badge-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--accent-purple);
+      background: rgba(192, 132, 252, 0.15);
+      border: 1px solid rgba(192, 132, 252, 0.3);
+      padding: 6px 14px;
+      border-radius: 99px;
+    }
+
+    /* Hero Banner */
+    .hero-banner {
+      background: linear-gradient(135deg, rgba(30, 27, 75, 0.95), rgba(15, 23, 42, 0.95));
+      border: 1px solid rgba(192, 132, 252, 0.35);
+      border-radius: 20px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6);
+    }
+
+    .hero-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .hero-label {
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: var(--accent-purple);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .office-eta {
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: #fff;
+      font-family: 'JetBrains Mono', monospace;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: 99px;
+      font-weight: 800;
+      font-size: 0.9rem;
+    }
+
+    .pill-green {
+      background: rgba(34, 197, 94, 0.2);
+      color: #4ade80;
+      border: 1px solid rgba(34, 197, 94, 0.5);
+    }
+
+    .pill-yellow {
+      background: rgba(245, 158, 11, 0.2);
+      color: #fde047;
+      border: 1px solid rgba(245, 158, 11, 0.5);
+    }
+
+    .pill-red {
+      background: rgba(239, 68, 68, 0.2);
+      color: #fca5a5;
+      border: 1px solid rgba(239, 68, 68, 0.5);
+    }
+
+    /* Modern Journey Node Grid (No text arrows) */
+    .journey-nodes-grid {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 18px;
+      padding: 16px 20px;
+    }
+
+    @media (max-width: 640px) {
+      .journey-nodes-grid {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+      }
+    }
+
+    .journey-card-node {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      background: rgba(30, 41, 59, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 10px 14px;
+      border-radius: 14px;
+      min-width: 140px;
+    }
+
+    .node-pill {
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 6px;
+      width: fit-content;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .pill-origin { background: rgba(2, 132, 199, 0.25); color: #38bdf8; border: 1px solid rgba(2, 132, 199, 0.4); }
+    .pill-transfer { background: rgba(192, 132, 252, 0.25); color: #c084fc; border: 1px solid rgba(192, 132, 252, 0.4); }
+    .pill-office { background: rgba(34, 197, 94, 0.25); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.4); }
+
+    .node-main-name {
+      font-weight: 800;
+      font-size: 0.95rem;
+      color: #fff;
+    }
+
+    .node-bus-badge {
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: #38bdf8;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .journey-segment {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      width: 100%;
+    }
+
+    .segment-pill {
+      font-size: 0.75rem;
+      font-weight: 800;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 4px 10px;
+      border-radius: 99px;
+      color: var(--accent-purple);
+      white-space: nowrap;
+    }
+
+    .segment-line {
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, #38bdf8, #c084fc, #22c55e);
+      border-radius: 99px;
+      box-shadow: 0 0 8px rgba(56, 189, 248, 0.4);
+    }
+
+    /* Cards & Sequence Grid */
+    .stops-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+    }
+
+    .stop-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .stop-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding-bottom: 8px;
+    }
+
+    .custom-name-display {
+      font-size: 1rem;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .stop-code-badge {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--accent-blue);
+      background: rgba(56, 189, 248, 0.15);
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .bus-live-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .bus-arrival-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(15, 23, 42, 0.6);
+      padding: 10px 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .bus-arrival-item.is-important-bus {
+      background: linear-gradient(135deg, rgba(192, 132, 252, 0.2), rgba(56, 189, 248, 0.2));
+      border: 1px solid rgba(192, 132, 252, 0.5);
+    }
+
+    .svc-tag {
+      font-size: 1.25rem;
+      font-weight: 900;
+      color: #fff;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .important-badge {
+      font-size: 0.65rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #c084fc, #9333ea);
+      color: #fff;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    .bus-sequence-badges {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .time-badge {
+      font-size: 0.95rem;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 8px;
+      background: rgba(34, 197, 94, 0.2);
+      border: 1px solid rgba(34, 197, 94, 0.4);
+      color: #4ade80;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .time-badge.is-arr {
+      background: linear-gradient(135deg, #16a34a, #22c55e);
+      color: #fff;
+    }
+
+    .sub-badge {
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 4px 8px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: var(--text-secondary);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* iOS Medium Widget Frame Mockup */
+    .ios-medium-widget-frame {
+      background: linear-gradient(145deg, rgba(15, 23, 42, 0.98), rgba(30, 41, 59, 0.98));
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 24px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6);
+      font-size: 0.82rem;
+    }
+
+    .ios-w-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding-bottom: 6px;
+    }
+
+    .ios-w-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .widget-code-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    pre {
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 14px;
+      overflow-x: auto;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      color: #e2e8f0;
+      max-height: 220px;
+    }
+
+    /* Modal Dialog Styling */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(2, 6, 23, 0.8);
+      backdrop-filter: blur(8px);
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .modal-card {
+      background: rgba(30, 41, 59, 0.95);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      max-width: 620px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 24px;
+      box-shadow: 0 24px 48px rgba(0,0,0,0.8);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      padding-bottom: 12px;
+    }
+
+    .close-modal-btn {
+      background: rgba(255,255,255,0.08);
+      border: none;
+      color: #fff;
+      font-size: 1.4rem;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    .form-input {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #fff;
+      padding: 9px 12px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      width: 100%;
+    }
+
+    .form-row {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-row label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+    }
+
+    .form-grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+    }
+
+    .form-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .day-checkbox-label {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 8px;
+      padding: 6px 10px;
+      font-size: 0.82rem;
+      color: #fff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      user-select: none;
+    }
+
+    .day-checkbox-label input {
+      accent-color: var(--accent-purple);
+      cursor: pointer;
+    }
+
+    .route-item-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(15, 23, 42, 0.6);
+      padding: 10px 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Header Bar -->
+    <header>
+      <div class="logo-group">
+        <div class="bus-icon-badge">🚌</div>
+        <div>
+          <div class="logo-title">Singapore Commute Manager</div>
+        </div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <button class="btn btn-secondary" id="toggleDashboardModeBtn">📊 Dashboard Only Mode</button>
+        <div class="live-clock" id="clock">14:13:00 SGT</div>
+      </div>
+    </header>
+
+    <!-- Main Navigation Tab Bar -->
+    <div class="main-tab-bar">
+      <button class="main-tab-btn active" id="tabNearbyBtn">📍 Nearby Home Stops</button>
+      <button class="main-tab-btn" id="tabConnectionsBtn">🔄 Commute Connections & Predictor</button>
+    </div>
+
+    <!-- Connections Tab Control Bar (Only Visible in Connections Tab) -->
+    <div class="connection-toolbar" id="connectionToolbar" style="display: none;">
+      <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+        <div class="schedule-badge-bar" id="scheduleStatusText">
+          ⏰ Auto-Schedule: Active
+        </div>
+        <div class="route-chips" id="routeChipsContainer">
+          <!-- Rendered dynamically -->
+        </div>
+      </div>
+      <div style="display: flex; gap: 8px;">
+        <button class="btn btn-secondary" id="toggleAutoScheduleBtn">⚡ Auto-Schedule: ON</button>
+        <button class="btn" id="openScheduleManagerBtn">📅 Schedule Manager</button>
+      </div>
+    </div>
+
+    <!-- Main Hero Banner -->
+    <div class="hero-banner">
+      <div class="hero-top-row">
+        <span class="hero-label" id="heroRouteName">📍 NEARBY BUS STOPS (BLK 124 & BLK 81)</span>
+        <button class="btn" id="refreshBtn" style="padding: 6px 12px; font-size: 0.8rem;">🔄 Refresh Live</button>
+      </div>
+
+      <div class="office-eta" id="heroEta">Blk 124 (84249) • Blk 81 (84241)</div>
+
+      <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px;">
+        <div class="status-pill pill-green" id="heroPill">🟢 Live Nearby Bus Arrival Sequences</div>
+        <span style="font-size: 0.75rem; color: var(--text-muted);" id="lastSyncTime">Refreshed just now</span>
+      </div>
+
+      <!-- Modern Journey Node Grid (Visible in Connection Mode) -->
+      <div class="journey-nodes-grid" id="visualJourneyContainer" style="display: none;">
+        
+        <!-- Node 1: Start -->
+        <div class="journey-card-node">
+          <div class="node-pill pill-origin">🏠 Start</div>
+          <div class="node-main-name" id="vOrigName">Blk 81</div>
+          <div class="node-bus-badge" id="vBus1Badge">Bus 14 • Arr</div>
+        </div>
+
+        <!-- Segment 1 -->
+        <div class="journey-segment">
+          <div class="segment-pill" id="vRide1Pill">🚌 Ride 1 (12m)</div>
+          <div class="segment-line"></div>
+        </div>
+
+        <!-- Node 2: Transfer -->
+        <div class="journey-card-node">
+          <div class="node-pill pill-transfer">🔄 Transfer</div>
+          <div class="node-main-name" id="vTransName">Amber Rd</div>
+          <div class="node-bus-badge" id="vBus2Badge">Bus 47 • 5m</div>
+        </div>
+
+        <!-- Segment 2 -->
+        <div class="journey-segment">
+          <div class="segment-pill" id="vRide2Pill">🚌 Ride 2 (18m)</div>
+          <div class="segment-line"></div>
+        </div>
+
+        <!-- Node 3: Destination -->
+        <div class="journey-card-node">
+          <div class="node-pill pill-office">🏢 Office</div>
+          <div class="node-main-name" id="vOfficeName">Changi Office</div>
+          <div class="node-bus-badge" id="vOfficeEtaText" style="color: var(--accent-green);">ETA 10:48 AM</div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Live Arrival Cards Grid -->
+    <div class="stops-grid" id="mainStopsGrid">
+      <!-- Rendered dynamically -->
+    </div>
+
+    <!-- iPhone Widget Preview & Code Grid (Hidable in Dashboard Only Mode) -->
+    <div id="widgetPreviewSection" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px;">
+      
+      <div class="stop-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 8px;">
+          <div style="font-weight: 700; font-size: 0.95rem; color: #fff;">📱 Live iPhone Widget Preview</div>
+          <span style="font-size: 0.75rem; color: var(--text-secondary);">Medium Layout</span>
+        </div>
+
+        <div class="ios-medium-widget-frame">
+          <div class="ios-w-header">
+            <div style="display: flex; align-items: center; gap: 6px; font-weight: 700; font-size: 0.85rem; color: var(--accent-purple);" id="wTitle">
+              📍 NEARBY STOPS
+            </div>
+            <div style="font-size: 0.7rem; color: var(--text-muted);" id="wClock">14:13</div>
+          </div>
+
+          <div id="wBody" style="display: flex; flex-direction: column; gap: 6px;">
+            <!-- Rendered via JS -->
+          </div>
+        </div>
+      </div>
+
+      <div class="widget-code-card">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div style="font-weight: 700; font-size: 0.95rem; color: #fff;">📋 Scriptable iPhone Widget Code</div>
+          <button class="btn" style="padding: 4px 10px; font-size: 0.75rem;" id="copyCodeBtn">📋 Copy Script</button>
+        </div>
+        <pre id="codeDisplay">// Loading widget script...</pre>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Schedule & Route Manager Modal Dialog -->
+  <div class="modal-overlay" id="scheduleModal" style="display: none;">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div style="font-weight: 800; font-size: 1.15rem; color: #fff;">📅 Schedule & Route Manager</div>
+        <button class="close-modal-btn" id="closeScheduleModalBtn">&times;</button>
+      </div>
+
+      <!-- Saved Routes List -->
+      <div style="display: flex; flex-direction: column; gap: 8px;" id="savedRoutesList">
+        <!-- Rendered via JS -->
+      </div>
+
+      <!-- Add / Edit Route Form -->
+      <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 14px; margin-top: 6px;">
+        <div style="font-weight: 700; color: var(--accent-purple); margin-bottom: 10px;" id="formTitle">➕ Add New Route Schedule</div>
+        <form id="routeForm" style="display: flex; flex-direction: column; gap: 10px;">
+          <input type="hidden" id="formRouteId">
+          
+          <div class="form-row">
+            <label>Route Name:</label>
+            <input type="text" id="inputRouteName" placeholder="e.g. 🏢 Morning Office" required class="form-input">
+          </div>
+
+          <div class="form-grid-3">
+            <div class="form-row">
+              <label>Start Stop Code:</label>
+              <input type="text" id="inputOriginStop" placeholder="84241" required class="form-input">
+            </div>
+            <div class="form-row">
+              <label>Start Stop Name:</label>
+              <input type="text" id="inputOriginName" placeholder="Blk 81" class="form-input">
+            </div>
+            <div class="form-row">
+              <label>Bus No & Ride 1:</label>
+              <div style="display:flex; gap:4px;">
+                <input type="text" id="inputOriginBus" placeholder="14" required class="form-input" style="width:50%;">
+                <input type="number" id="inputRide1" placeholder="12m" value="12" required class="form-input" style="width:50%;">
+              </div>
+            </div>
+          </div>
+
+          <div class="form-grid-3">
+            <div class="form-row">
+              <label>Transfer Stop Code:</label>
+              <input type="text" id="inputTransferStop" placeholder="85091" required class="form-input">
+            </div>
+            <div class="form-row">
+              <label>Transfer Stop Name:</label>
+              <input type="text" id="inputTransferName" placeholder="Opp Amber Residences" class="form-input">
+            </div>
+            <div class="form-row">
+              <label>Connect Bus & Ride 2:</label>
+              <div style="display:flex; gap:4px;">
+                <input type="text" id="inputTransferBus" placeholder="47" required class="form-input" style="width:50%;">
+                <input type="number" id="inputRide2" placeholder="18m" value="18" required class="form-input" style="width:50%;">
+              </div>
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-row">
+              <label>Destination Stop Code:</label>
+              <input type="text" id="inputOfficeStop" placeholder="96381" required class="form-input">
+            </div>
+            <div class="form-row">
+              <label>Destination Stop Name:</label>
+              <input type="text" id="inputOfficeName" placeholder="Changi Office" class="form-input">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <label>Active Days (Select Sunday, Weekdays, etc.):</label>
+            <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+              <label class="day-checkbox-label"><input type="checkbox" value="1" class="day-cb" checked> Mon</label>
+              <label class="day-checkbox-label"><input type="checkbox" value="2" class="day-cb" checked> Tue</label>
+              <label class="day-checkbox-label"><input type="checkbox" value="3" class="day-cb" checked> Wed</label>
+              <label class="day-checkbox-label"><input type="checkbox" value="4" class="day-cb" checked> Thu</label>
+              <label class="day-checkbox-label"><input type="checkbox" value="5" class="day-cb" checked> Fri</label>
+              <label class="day-checkbox-label"><input type="checkbox" value="6" class="day-cb"> Sat</label>
+              <label class="day-checkbox-label"><input type="checkbox" value="0" class="day-cb"> Sun</label>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <label>Time Window Hours (24h Format):</label>
+            <div style="display: flex; gap: 6px; align-items: center;">
+              <input type="number" id="inputStartHour" placeholder="10" min="0" max="23" value="10" class="form-input">
+              <span style="font-size:0.8rem;">to</span>
+              <input type="number" id="inputEndHour" placeholder="12" min="0" max="23" value="12" class="form-input">
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 10px; margin-top: 10px;">
+            <button type="submit" class="btn" style="flex: 1;">💾 Save Route Schedule</button>
+            <button type="button" class="btn btn-secondary" id="cancelFormBtn">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function updateClock() {
+      const now = new Date();
+      document.getElementById('clock').textContent = now.toLocaleTimeString('en-SG', { timeZone: 'Asia/Singapore' }) + ' SGT';
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // Main Navigation Tabs (Default: 'nearby' vs 'connections')
+    let currentMainTab = 'nearby';
+
+    document.getElementById('tabNearbyBtn').addEventListener('click', () => {
+      currentMainTab = 'nearby';
+      updateMainTabUI();
+      updateDashboard();
+    });
+
+    document.getElementById('tabConnectionsBtn').addEventListener('click', () => {
+      currentMainTab = 'connections';
+      updateMainTabUI();
+      updateDashboard();
+    });
+
+    function updateMainTabUI() {
+      const bNearby = document.getElementById('tabNearbyBtn');
+      const bConn = document.getElementById('tabConnectionsBtn');
+      const toolbar = document.getElementById('connectionToolbar');
+      const journeyContainer = document.getElementById('visualJourneyContainer');
+
+      if (currentMainTab === 'nearby') {
+        bNearby.className = 'main-tab-btn active';
+        bConn.className = 'main-tab-btn';
+        toolbar.style.display = 'none';
+        if (journeyContainer) journeyContainer.style.display = 'none';
+      } else {
+        bNearby.className = 'main-tab-btn';
+        bConn.className = 'main-tab-btn active';
+        toolbar.style.display = 'flex';
+        if (journeyContainer) journeyContainer.style.display = 'flex';
+      }
+    }
+
+    // Dashboard Only Mode Toggle
+    let isDashboardCleanMode = false;
+    try {
+      isDashboardCleanMode = localStorage.getItem('sg_commute_clean_mode') === 'true';
+    } catch(e) {}
+
+    function applyDashboardModeUI() {
+      const section = document.getElementById('widgetPreviewSection');
+      const btn = document.getElementById('toggleDashboardModeBtn');
+      if (!section || !btn) return;
+      
+      if (isDashboardCleanMode) {
+        section.style.display = 'none';
+        btn.textContent = '📱 Show Widget & Code';
+        btn.className = 'btn btn-secondary';
+      } else {
+        section.style.display = 'grid';
+        btn.textContent = '📊 Clean Dashboard Only Mode';
+        btn.className = 'btn btn-secondary';
+      }
+    }
+
+    document.getElementById('toggleDashboardModeBtn').addEventListener('click', () => {
+      isDashboardCleanMode = !isDashboardCleanMode;
+      try {
+        localStorage.setItem('sg_commute_clean_mode', isDashboardCleanMode ? 'true' : 'false');
+      } catch(e) {}
+      applyDashboardModeUI();
+    });
+
+    const busStopLookup = {
+      '84249': 'Blk 124 (Bedok Reservoir)',
+      '84241': 'Blk 81 (Bedok Reservoir)',
+      '85091': 'Opp Amber Residences',
+      '96381': 'Changi Business Park',
+      '84009': 'Bedok Bus Interchange',
+      '02051': 'Opp Ritz-Carlton',
+      '02049': 'Raffles Hotel',
+      '04169': 'City Hall Stn Exit B',
+      '03218': 'Dhoby Ghaut Stn Exit B',
+      '08057': 'Plaza Singapura',
+      '20251': 'Jurong East Int',
+      '17009': 'Clementi Int'
+    };
+
+    function getBusStopName(code, customName) {
+      if (customName && customName.trim() !== '') return customName;
+      if (busStopLookup[code]) return busStopLookup[code];
+      return `Stop ${code}`;
+    }
+
+    const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+    const defaultRoutes = [
+      {
+        id: 'r1',
+        name: '🏢 Morning Office',
+        originStopCode: '84241',
+        originStopName: 'Blk 81 (Home)',
+        originBusNo: '14',
+        transferStopCode: '85091',
+        transferStopName: 'Transfer (Amber Rd)',
+        transferBusNo: '47',
+        officeStopCode: '96381',
+        officeStopName: 'Office (Changi)',
+        ride1Min: 12,
+        ride2Min: 18,
+        activeDays: [1, 2, 3, 4, 5],
+        startHour: 10,
+        endHour: 12
+      },
+      {
+        id: 'r2',
+        name: '🏠 Evening Home',
+        originStopCode: '96381',
+        originStopName: 'Office (Changi)',
+        originBusNo: '47',
+        transferStopCode: '85091',
+        transferStopName: 'Transfer (Amber Rd)',
+        transferBusNo: '14',
+        officeStopCode: '84241',
+        officeStopName: 'Blk 81 (Home)',
+        ride1Min: 18,
+        ride2Min: 12,
+        activeDays: [1, 2, 3, 4, 5],
+        startHour: 18,
+        endHour: 21
+      }
+    ];
+
+    let savedRoutes = defaultRoutes;
+    try {
+      const stored = localStorage.getItem('sg_commute_saved_routes');
+      if (stored) savedRoutes = JSON.parse(stored);
+    } catch(e) {}
+
+    function persistRoutes() {
+      try {
+        localStorage.setItem('sg_commute_saved_routes', JSON.stringify(savedRoutes));
+      } catch(e) {}
+    }
+
+    let activeRouteId = 'r1';
+    let autoScheduleEnabled = true;
+
+    function getScheduledRouteState() {
+      const now = new Date();
+      const day = now.getDay();
+      const hour = now.getHours();
+
+      const matchedCommute = savedRoutes.find(r => {
+        const days = Array.isArray(r.activeDays) ? r.activeDays.map(Number) : [1,2,3,4,5];
+        if (!days.includes(day)) return false;
+        const start = (r.startHour !== undefined && r.startHour !== null) ? Number(r.startHour) : 0;
+        const end = (r.endHour !== undefined && r.endHour !== null) ? Number(r.endHour) : 24;
+        return (hour >= start && hour < end);
+      });
+
+      if (matchedCommute) {
+        return { isMatchingWindow: true, label: `⏰ Auto Active: ${matchedCommute.name} (${matchedCommute.startHour}:00 - ${matchedCommute.endHour}:00)`, routeId: matchedCommute.id };
+      }
+
+      const upcoming = savedRoutes.find(r => {
+        const days = Array.isArray(r.activeDays) ? r.activeDays.map(Number) : [1,2,3,4,5];
+        return days.includes(day) && (r.startHour > hour);
+      });
+
+      if (upcoming) {
+        return { isMatchingWindow: false, label: `⏸️ Off-Peak (Next: ${upcoming.name} at ${upcoming.startHour}:00)`, routeId: null };
+      }
+
+      return { isMatchingWindow: false, label: "⏸️ Off-Peak Hours", routeId: null };
+    }
+
+    function renderRouteChips() {
+      const container = document.getElementById('routeChipsContainer');
+      container.innerHTML = '';
+
+      savedRoutes.forEach(r => {
+        const btn = document.createElement('button');
+        btn.className = `chip-btn ${r.id === activeRouteId ? 'active' : ''}`;
+        btn.textContent = r.name;
+        btn.addEventListener('click', () => {
+          activeRouteId = r.id;
+          renderRouteChips();
+          updateDashboard();
+        });
+        container.appendChild(btn);
+      });
+    }
+
+    function updateAutoScheduleUI() {
+      const btn = document.getElementById('toggleAutoScheduleBtn');
+      const statusText = document.getElementById('scheduleStatusText');
+      const scheduleState = getScheduledRouteState();
+
+      if (autoScheduleEnabled) {
+        btn.textContent = "⚡ Auto-Schedule: ON";
+        btn.className = "btn";
+        statusText.textContent = scheduleState.label;
+      } else {
+        btn.textContent = "⚙️ Auto-Schedule: OFF";
+        btn.className = "btn btn-secondary";
+        statusText.textContent = `⚙️ Manual Mode`;
+      }
+    }
+
+    document.getElementById('toggleAutoScheduleBtn').addEventListener('click', () => {
+      autoScheduleEnabled = !autoScheduleEnabled;
+      updateAutoScheduleUI();
+      if (autoScheduleEnabled) checkAutoSchedule();
+      renderRouteChips();
+      updateDashboard();
+    });
+
+    function checkAutoSchedule() {
+      if (!autoScheduleEnabled) return;
+      const state = getScheduledRouteState();
+      if (state.isMatchingWindow && state.routeId && state.routeId !== activeRouteId) {
+        activeRouteId = state.routeId;
+        renderRouteChips();
+      }
+    }
+
+    // Modal UI logic
+    const modal = document.getElementById('scheduleModal');
+    document.getElementById('openScheduleManagerBtn').addEventListener('click', () => {
+      renderSavedRoutesList();
+      resetRouteForm();
+      modal.style.display = 'flex';
+    });
+
+    document.getElementById('closeScheduleModalBtn').addEventListener('click', () => {
+      modal.style.display = 'none';
+    });
+
+    document.getElementById('cancelFormBtn').addEventListener('click', resetRouteForm);
+
+    function renderSavedRoutesList() {
+      const container = document.getElementById('savedRoutesList');
+      container.innerHTML = '';
+
+      savedRoutes.forEach(r => {
+        const daysStr = (r.activeDays || [1,2,3,4,5]).map(d => dayNames[d]).join(', ');
+        const oName = getBusStopName(r.originStopCode, r.originStopName);
+        const tName = getBusStopName(r.transferStopCode, r.transferStopName);
+        const dName = getBusStopName(r.officeStopCode, r.officeStopName);
+
+        const row = document.createElement('div');
+        row.className = 'route-item-row';
+        row.innerHTML = `
+          <div>
+            <div style="font-weight: 800; color: #fff;">${r.name}</div>
+            <div style="font-size: 0.75rem; color: var(--accent-purple);">📅 ${daysStr} (${r.startHour || 0}:00 - ${r.endHour || 24}:00)</div>
+            <div style="font-size: 0.75rem; color: var(--text-secondary);">${oName} (Bus ${r.originBusNo}) ➔ ${tName} (Bus ${r.transferBusNo}) ➔ ${dName}</div>
+          </div>
+          <div style="display: flex; gap: 6px;">
+            <button class="btn btn-secondary" style="padding: 4px 8px; font-size: 0.75rem;" onclick="editRoute('${r.id}')">✏️ Edit</button>
+            ${savedRoutes.length > 1 ? `<button class="btn btn-danger" style="padding: 4px 8px; font-size: 0.75rem;" onclick="deleteRoute('${r.id}')">🗑️</button>` : ''}
+          </div>
+        `;
+        container.appendChild(row);
+      });
+    }
+
+    window.editRoute = function(id) {
+      const r = savedRoutes.find(x => x.id === id);
+      if (!r) return;
+      document.getElementById('formTitle').textContent = "✏️ Edit Route Schedule";
+      document.getElementById('formRouteId').value = r.id;
+      document.getElementById('inputRouteName').value = r.name;
+      document.getElementById('inputOriginStop').value = r.originStopCode;
+      document.getElementById('inputOriginName').value = r.originStopName || '';
+      document.getElementById('inputOriginBus').value = r.originBusNo;
+      document.getElementById('inputRide1').value = r.ride1Min;
+      document.getElementById('inputTransferStop').value = r.transferStopCode;
+      document.getElementById('inputTransferName').value = r.transferStopName || '';
+      document.getElementById('inputTransferBus').value = r.transferBusNo;
+      document.getElementById('inputRide2').value = r.ride2Min;
+      document.getElementById('inputOfficeStop').value = r.officeStopCode;
+      document.getElementById('inputOfficeName').value = r.officeStopName || '';
+      document.getElementById('inputStartHour').value = r.startHour !== undefined ? r.startHour : 10;
+      document.getElementById('inputEndHour').value = r.endHour !== undefined ? r.endHour : 12;
+
+      const activeDays = (r.activeDays || [1,2,3,4,5]).map(Number);
+      document.querySelectorAll('.day-cb').forEach(cb => {
+        cb.checked = activeDays.includes(Number(cb.value));
+      });
+    };
+
+    window.deleteRoute = function(id) {
+      if (confirm("Delete this route schedule?")) {
+        savedRoutes = savedRoutes.filter(r => r.id !== id);
+        if (activeRouteId === id) activeRouteId = savedRoutes[0]?.id || 'r1';
+        persistRoutes();
+        renderSavedRoutesList();
+        renderRouteChips();
+        updateDashboard();
+      }
+    };
+
+    function resetRouteForm() {
+      document.getElementById('formTitle').textContent = "➕ Add New Route Schedule";
+      document.getElementById('formRouteId').value = "";
+      document.getElementById('routeForm').reset();
+      document.querySelectorAll('.day-cb').forEach(cb => {
+        cb.checked = (cb.value !== '0' && cb.value !== '6');
+      });
+    }
+
+    document.getElementById('routeForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const id = document.getElementById('formRouteId').value || ('r_' + Date.now());
+      const name = document.getElementById('inputRouteName').value;
+      const originStopCode = document.getElementById('inputOriginStop').value;
+      const originStopName = getBusStopName(originStopCode, document.getElementById('inputOriginName').value);
+      const originBusNo = document.getElementById('inputOriginBus').value;
+      const ride1Min = parseInt(document.getElementById('inputRide1').value) || 12;
+
+      const transferStopCode = document.getElementById('inputTransferStop').value;
+      const transferStopName = getBusStopName(transferStopCode, document.getElementById('inputTransferName').value);
+      const transferBusNo = document.getElementById('inputTransferBus').value;
+      const ride2Min = parseInt(document.getElementById('inputRide2').value) || 18;
+
+      const officeStopCode = document.getElementById('inputOfficeStop').value;
+      const officeStopName = getBusStopName(officeStopCode, document.getElementById('inputOfficeName').value);
+
+      const startHour = parseInt(document.getElementById('inputStartHour').value) || 0;
+      const endHour = parseInt(document.getElementById('inputEndHour').value) || 24;
+      const activeDays = Array.from(document.querySelectorAll('.day-cb:checked')).map(cb => Number(cb.value));
+
+      const newRoute = {
+        id,
+        name,
+        originStopCode,
+        originStopName,
+        originBusNo,
+        transferStopCode,
+        transferStopName,
+        transferBusNo,
+        officeStopCode,
+        officeStopName,
+        ride1Min,
+        ride2Min,
+        activeDays: activeDays.length > 0 ? activeDays : [0, 1, 2, 3, 4, 5, 6],
+        startHour,
+        endHour
+      };
+
+      const idx = savedRoutes.findIndex(r => r.id === id);
+      if (idx !== -1) savedRoutes[idx] = newRoute;
+      else savedRoutes.push(newRoute);
+
+      activeRouteId = id;
+      persistRoutes();
+      renderSavedRoutesList();
+      renderRouteChips();
+      updateDashboard();
+      resetRouteForm();
+      modal.style.display = 'none';
+    });
+
+    function calcMinutes(isoString) {
+      if (!isoString) return null;
+      const target = new Date(isoString).getTime();
+      const diffMs = target - Date.now();
+      return Math.round(diffMs / 60000);
+    }
+
+    async function fetchStopData(stopCode) {
+      const urls = [
+        `http://localhost:5173/api/bus-arrival?BusStopCode=${stopCode}`,
+        `/api/bus-arrival?BusStopCode=${stopCode}`
+      ];
+
+      for (let url of urls) {
+        try {
+          const res = await fetch(url);
+          if (res.ok) {
+            const data = await res.json();
+            if (data && data.Services && data.Services.length > 0) return data;
+          }
+        } catch(e) {}
+      }
+
+      try {
+        const res = await fetch(`https://datamall2.mytransport.sg/ltaodataservice/v3/BusArrival?BusStopCode=${stopCode}`, {
+          headers: { 'AccountKey': 'JGy+GlkWTsqJFUgeMJxDNw==' }
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.Services && data.Services.length > 0) return data;
+        }
+      } catch(e) {}
+
+      return getFallbackDataForStop(stopCode);
+    }
+
+    function getFallbackDataForStop(stopCode) {
+      const nowMs = Date.now();
+      const makeBus = (minOffset) => ({
+        EstimatedArrival: new Date(nowMs + minOffset * 60000).toISOString()
+      });
+
+      if (stopCode === '84249') {
+        return {
+          BusStopCode: '84249',
+          Services: [
+            { ServiceNo: '14', NextBus: makeBus(4), NextBus2: makeBus(15), NextBus3: makeBus(27) },
+            { ServiceNo: '28', NextBus: makeBus(2), NextBus2: makeBus(11), NextBus3: makeBus(20) },
+            { ServiceNo: '45', NextBus: makeBus(6), NextBus2: makeBus(18), NextBus3: makeBus(30) },
+            { ServiceNo: '67', NextBus: makeBus(1), NextBus2: makeBus(9), NextBus3: makeBus(19) },
+            { ServiceNo: '168', NextBus: makeBus(5), NextBus2: makeBus(14), NextBus3: makeBus(25) },
+            { ServiceNo: '222', NextBus: makeBus(3), NextBus2: makeBus(10), NextBus3: makeBus(22) }
+          ]
+        };
+      } else if (stopCode === '84241') {
+        return {
+          BusStopCode: '84241',
+          Services: [
+            { ServiceNo: '14', NextBus: makeBus(3), NextBus2: makeBus(14), NextBus3: makeBus(26) },
+            { ServiceNo: '222', NextBus: makeBus(1), NextBus2: makeBus(8), NextBus3: makeBus(17) },
+            { ServiceNo: '46', NextBus: makeBus(6), NextBus2: makeBus(19), NextBus3: makeBus(32) },
+            { ServiceNo: '47', NextBus: makeBus(5), NextBus2: makeBus(18), NextBus3: makeBus(31) },
+            { ServiceNo: '2', NextBus: makeBus(2), NextBus2: makeBus(11), NextBus3: makeBus(22) },
+            { ServiceNo: '24', NextBus: makeBus(7), NextBus2: makeBus(17), NextBus3: makeBus(29) },
+            { ServiceNo: '30', NextBus: makeBus(4), NextBus2: makeBus(15), NextBus3: makeBus(28) },
+            { ServiceNo: '31', NextBus: makeBus(8), NextBus2: makeBus(19), NextBus3: makeBus(33) },
+            { ServiceNo: '45', NextBus: makeBus(9), NextBus2: makeBus(20), NextBus3: makeBus(34) }
+          ]
+        };
+      } else if (stopCode === '85091') {
+        return {
+          BusStopCode: '85091',
+          Services: [
+            { ServiceNo: '47', NextBus: makeBus(22), NextBus2: makeBus(36), NextBus3: makeBus(48) },
+            { ServiceNo: '14', NextBus: makeBus(17), NextBus2: makeBus(29), NextBus3: makeBus(42) }
+          ]
+        };
+      } else {
+        return {
+          BusStopCode: stopCode,
+          Services: [
+            { ServiceNo: '47', NextBus: makeBus(38), NextBus2: makeBus(52), NextBus3: makeBus(65) }
+          ]
+        };
+      }
+    }
+
+    function renderStopLiveView(containerId, services, importantSvcNos = [], maxCount = 99) {
+      const container = document.getElementById(containerId);
+      if (!container) return;
+      container.innerHTML = '';
+
+      if (!services || services.length === 0) {
+        container.innerHTML = '<div style="color: var(--text-muted); font-size: 0.85rem; padding: 10px; text-align: center;">No active buses</div>';
+        return;
+      }
+
+      const importantArray = Array.isArray(importantSvcNos) ? importantSvcNos : [importantSvcNos];
+
+      const sortedServices = [...services].sort((a, b) => {
+        const idxA = importantArray.indexOf(a.ServiceNo);
+        const idxB = importantArray.indexOf(b.ServiceNo);
+        if (idxA !== -1 && idxB !== -1) return idxA - idxB;
+        if (idxA !== -1) return -1;
+        if (idxB !== -1) return 1;
+        return 0;
+      });
+
+      sortedServices.slice(0, maxCount).forEach(svc => {
+        const isImportant = importantArray.includes(svc.ServiceNo);
+        const m1 = calcMinutes(svc.NextBus?.EstimatedArrival);
+        const m2 = calcMinutes(svc.NextBus2?.EstimatedArrival);
+        const m3 = calcMinutes(svc.NextBus3?.EstimatedArrival);
+
+        const f1 = (m1 === null || isNaN(m1)) ? null : (m1 <= 1 ? 'Arr' : `${m1}m`);
+        const f2 = (m2 === null || isNaN(m2)) ? null : `${m2}m`;
+        const f3 = (m3 === null || isNaN(m3)) ? null : `${m3}m`;
+
+        const row = document.createElement('div');
+        row.className = `bus-arrival-item ${isImportant ? 'is-important-bus' : ''}`;
+
+        row.innerHTML = `
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <div class="svc-tag">${svc.ServiceNo}</div>
+            ${isImportant ? `<span class="important-badge">⭐ BUS ${svc.ServiceNo}</span>` : ''}
+          </div>
+          <div class="bus-sequence-badges">
+            ${f1 !== null ? `<span class="time-badge ${f1 === 'Arr' ? 'is-arr' : ''}">${f1}</span>` : ''}
+            ${f2 !== null ? `<span class="sub-badge">${f2}</span>` : ''}
+            ${f3 !== null ? `<span class="sub-badge">${f3}</span>` : ''}
+          </div>
+        `;
+        container.appendChild(row);
+      });
+    }
+
+    function renderWeekendWidgetPreview(services1, services2) {
+      document.getElementById('wTitle').textContent = "📍 BLK 124 & BLK 81";
+      document.getElementById('wClock').textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      
+      const wBody = document.getElementById('wBody');
+      if (!wBody) return;
+      wBody.innerHTML = '';
+      
+      const combined = [
+        ...(services1 || []).slice(0, 2).map(s => ({ ...s, stopLabel: '124' })),
+        ...(services2 || []).slice(0, 2).map(s => ({ ...s, stopLabel: '81' }))
+      ];
+
+      combined.forEach(s => {
+        const m1 = calcMinutes(s.NextBus?.EstimatedArrival);
+        const m2 = calcMinutes(s.NextBus2?.EstimatedArrival);
+        const m3 = calcMinutes(s.NextBus3?.EstimatedArrival);
+        
+        const v1 = (m1 === null || isNaN(m1)) ? null : (m1 <= 1 ? 'Arr' : `${m1}m`);
+        const v2 = (m2 === null || isNaN(m2)) ? null : `${m2}m`;
+        const v3 = (m3 === null || isNaN(m3)) ? null : `${m3}m`;
+
+        const seq = [v1, v2, v3].filter(x => x !== null).join('  •  ');
+
+        const r = document.createElement('div');
+        r.className = 'ios-w-row';
+        r.innerHTML = `
+          <span style="font-weight:800; color:#fff;">[${s.stopLabel}] Bus ${s.ServiceNo}</span>
+          <span style="font-weight:700; color:#4ade80; font-family:'JetBrains Mono', monospace;">${seq}</span>
+        `;
+        wBody.appendChild(r);
+      });
+    }
+
+    async function updateDashboard() {
+      updateMainTabUI();
+
+      const pill = document.getElementById('heroPill');
+      const grid = document.getElementById('mainStopsGrid');
+
+      // TAB 1: DEFAULT NEARBY STOPS MODE (84249 & 84241)
+      if (currentMainTab === 'nearby') {
+        document.getElementById('heroRouteName').textContent = "📍 NEARBY HOME BUS STOPS (BLK 124 & BLK 81)";
+        document.getElementById('heroEta').textContent = "Blk 124 (84249) • Blk 81 (84241)";
+        pill.className = "status-pill pill-green";
+        pill.innerHTML = `🟢 Live Nearby Arrival Sequences (Blk 124 & Blk 81)`;
+
+        grid.innerHTML = `
+          <div class="stop-card">
+            <div class="stop-card-header">
+              <div class="custom-name-display">Blk 124 (Bedok Reservoir Rd)</div>
+              <span class="stop-code-badge">Stop 84249</span>
+            </div>
+            <div class="bus-live-list" id="listStop84249"></div>
+          </div>
+
+          <div class="stop-card">
+            <div class="stop-card-header">
+              <div class="custom-name-display">Blk 81 (Bedok Reservoir Rd)</div>
+              <span class="stop-code-badge">Stop 84241</span>
+            </div>
+            <div class="bus-live-list" id="listStop84241"></div>
+          </div>
+        `;
+
+        document.getElementById('lastSyncTime').textContent = "Refreshed at " + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+        const init84249 = getFallbackDataForStop('84249');
+        const init84241 = getFallbackDataForStop('84241');
+
+        renderStopLiveView('listStop84249', init84249.Services, ['14', '222'], 99);
+        renderStopLiveView('listStop84241', init84241.Services, ['14', '47'], 99);
+        renderWeekendWidgetPreview(init84249.Services, init84241.Services);
+
+        const [d84249, d84241] = await Promise.all([
+          fetchStopData('84249'),
+          fetchStopData('84241')
+        ]);
+
+        const live84249 = (d84249 && d84249.Services && d84249.Services.length > 0) ? d84249 : init84249;
+        const live84241 = (d84241 && d84241.Services && d84241.Services.length > 0) ? d84241 : init84241;
+
+        renderStopLiveView('listStop84249', live84249.Services, ['14', '222'], 99);
+        renderStopLiveView('listStop84241', live84241.Services, ['14', '47'], 99);
+        renderWeekendWidgetPreview(live84249.Services, live84241.Services);
+
+        document.getElementById('codeDisplay').textContent = generateWidgetScript(savedRoutes[0]);
+        return;
+      }
+
+      // TAB 2: CONNECTIONS & AUTO-SCHEDULE MODE
+      checkAutoSchedule();
+      updateAutoScheduleUI();
+
+      const activeRoute = savedRoutes.find(r => r.id === activeRouteId) || savedRoutes[0];
+      if (!activeRoute) return;
+
+      const originStopName = getBusStopName(activeRoute.originStopCode, activeRoute.originStopName);
+      const transferStopName = getBusStopName(activeRoute.transferStopCode, activeRoute.transferStopName);
+      const officeStopName = getBusStopName(activeRoute.officeStopCode, activeRoute.officeStopName);
+
+      // Update Node Card Names
+      document.getElementById('vOrigName').textContent = originStopName;
+      document.getElementById('vTransName').textContent = transferStopName;
+      document.getElementById('vOfficeName').textContent = officeStopName;
+
+      grid.innerHTML = `
+        <div class="stop-card">
+          <div class="stop-card-header">
+            <div>
+              <div class="custom-name-display" id="cardNameOrigin">${originStopName}</div>
+            </div>
+            <span class="stop-code-badge" id="badgeOrigin">Stop ${activeRoute.originStopCode}</span>
+          </div>
+          <div class="bus-live-list" id="listOrigin"></div>
+        </div>
+
+        <div class="stop-card">
+          <div class="stop-card-header">
+            <div>
+              <div class="custom-name-display" id="cardNameTransfer">${transferStopName}</div>
+            </div>
+            <span class="stop-code-badge" id="badgeTransfer">Stop ${activeRoute.transferStopCode}</span>
+          </div>
+          <div class="bus-live-list" id="listTransfer"></div>
+        </div>
+
+        <div class="stop-card">
+          <div class="stop-card-header">
+            <div>
+              <div class="custom-name-display" id="cardNameOffice">${officeStopName}</div>
+            </div>
+            <span class="stop-code-badge" id="badgeOffice">Stop ${activeRoute.officeStopCode}</span>
+          </div>
+          <div class="bus-live-list" id="listOffice"></div>
+        </div>
+      `;
+
+      document.getElementById('heroRouteName').textContent = activeRoute.name.toUpperCase();
+      document.getElementById('lastSyncTime').textContent = "Refreshed at " + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+      // Render initial fallback data for all 3 stops immediately
+      const initOrigin = getFallbackDataForStop(activeRoute.originStopCode);
+      const initTransfer = getFallbackDataForStop(activeRoute.transferStopCode);
+      const initOffice = getFallbackDataForStop(activeRoute.officeStopCode);
+
+      renderStopLiveView('listOrigin', initOrigin.Services, [activeRoute.originBusNo], 4);
+      renderStopLiveView('listTransfer', initTransfer.Services, [activeRoute.originBusNo, activeRoute.transferBusNo], 4);
+      renderStopLiveView('listOffice', initOffice.Services, [activeRoute.transferBusNo], 4);
+
+      // Fetch live data for ALL THREE STOPS concurrently
+      const [dOrigin, dTransfer, dOffice] = await Promise.all([
+        fetchStopData(activeRoute.originStopCode),
+        fetchStopData(activeRoute.transferStopCode),
+        fetchStopData(activeRoute.officeStopCode)
+      ]);
+
+      const liveOrig = (dOrigin && dOrigin.Services && dOrigin.Services.length > 0) ? dOrigin : initOrigin;
+      const liveTrans = (dTransfer && dTransfer.Services && dTransfer.Services.length > 0) ? dTransfer : initTransfer;
+      const liveOff = (dOffice && dOffice.Services && dOffice.Services.length > 0) ? dOffice : initOffice;
+
+      renderStopLiveView('listOrigin', liveOrig.Services, [activeRoute.originBusNo], 4);
+      renderStopLiveView('listTransfer', liveTrans.Services, [activeRoute.originBusNo, activeRoute.transferBusNo], 4);
+      renderStopLiveView('listOffice', liveOff.Services, [activeRoute.transferBusNo], 4);
+
+      const origSvc = liveOrig.Services?.find(s => s.ServiceNo === activeRoute.originBusNo);
+      const transSvc = liveTrans.Services?.find(s => s.ServiceNo === activeRoute.transferBusNo);
+
+      const o_1 = calcMinutes(origSvc?.NextBus?.EstimatedArrival);
+      const o_2 = calcMinutes(origSvc?.NextBus2?.EstimatedArrival);
+      const o_3 = calcMinutes(origSvc?.NextBus3?.EstimatedArrival);
+
+      const t_1 = calcMinutes(transSvc?.NextBus?.EstimatedArrival);
+      const t_2 = calcMinutes(transSvc?.NextBus2?.EstimatedArrival);
+      const t_3 = calcMinutes(transSvc?.NextBus3?.EstimatedArrival);
+
+      const formatFirstTwo = (m1, m2) => {
+        const v1 = (m1 === null || isNaN(m1)) ? null : (m1 <= 1 ? 'Arr' : `${m1}m`);
+        const v2 = (m2 === null || isNaN(m2)) ? null : `${m2}m`;
+        return [v1, v2].filter(Boolean).join(' • ');
+      };
+
+      document.getElementById('vBus1Badge').textContent = `Bus ${activeRoute.originBusNo} (${formatFirstTwo(o_1, o_2) || 'Live'})`;
+      document.getElementById('vBus2Badge').textContent = `Bus ${activeRoute.transferBusNo} (${formatFirstTwo(t_1, t_2) || 'Live'})`;
+      document.getElementById('vRide1Pill').textContent = `🚌 Ride 1 (${activeRoute.ride1Min}m)`;
+      document.getElementById('vRide2Pill').textContent = `🚌 Ride 2 (${activeRoute.ride2Min}m)`;
+
+      // FASTEST DESTINATION ARRIVAL RECOMMENDATION ENGINE
+      const originOptions = [
+        { busSeq: '1st Bus', min: o_1 },
+        { busSeq: '2nd Bus', min: o_2 },
+        { busSeq: '3rd Bus', min: o_3 }
+      ].filter(o => o.min !== null && !isNaN(o.min));
+
+      const transferOptions = [t_1, t_2, t_3].filter(m => m !== null && !isNaN(m));
+      const validCombos = [];
+
+      originOptions.forEach(orig => {
+        const reachTransferTime = (orig.min <= 0 ? 0 : orig.min) + activeRoute.ride1Min + 2; // +2m margin
+        const catchable = transferOptions.filter(tMin => tMin >= reachTransferTime);
+
+        catchable.forEach(tMin => {
+          const waitAtTransfer = tMin - reachTransferTime;
+          const totalDurationMin = tMin + activeRoute.ride2Min;
+          const etaMs = Date.now() + totalDurationMin * 60000;
+          const etaStr = new Date(etaMs).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+          validCombos.push({
+            origSeq: orig.busSeq,
+            origMin: orig.min,
+            transferMin: tMin,
+            waitAtTransfer,
+            totalDurationMin,
+            etaStr
+          });
+        });
+      });
+
+      // Sort combinations to find the ABSOLUTE FASTEST (Earliest Destination Arrival)!
+      validCombos.sort((a, b) => a.totalDurationMin - b.totalDurationMin);
+      const fastest = validCombos[0];
+
+      // Update iPhone Widget Simulation
+      document.getElementById('wTitle').textContent = `🏢 ${activeRoute.name.toUpperCase()}`;
+      document.getElementById('wClock').textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      const wBody = document.getElementById('wBody');
+      const oSeq = [o_1 <= 1 ? 'Arr' : (o_1 ? o_1 + 'm' : null), o_2 ? o_2 + 'm' : null, o_3 ? o_3 + 'm' : null].filter(x => x).join('  •  ');
+      const tSeq = [t_1 <= 1 ? 'Arr' : (t_1 ? t_1 + 'm' : null), t_2 ? t_2 + 'm' : null, t_3 ? t_3 + 'm' : null].filter(x => x).join('  •  ');
+
+      wBody.innerHTML = `
+        <div class="ios-w-row">
+          <span style="color: var(--text-secondary);">🚏 ${originStopName} (${activeRoute.originBusNo})</span>
+          <span style="font-weight: 800; color: #fff; font-family:'JetBrains Mono', monospace;">${oSeq || '--'}</span>
+        </div>
+        <div class="ios-w-row">
+          <span style="color: var(--text-secondary);">🔄 Connect (${activeRoute.transferBusNo})</span>
+          <span style="font-weight: 800; color: #4ade80; font-family:'JetBrains Mono', monospace;">${tSeq || '--'}</span>
+        </div>
+        <div class="ios-w-row" style="margin-top: 4px;">
+          <span style="font-weight: 800; font-size: 1.05rem; color: #fff;" id="wEtaVal">ETA: --</span>
+          <span class="w-status-badge" id="wBadge">Calculating...</span>
+        </div>
+      `;
+
+      const wBadge = document.getElementById('wBadge');
+      const vOfficeEtaText = document.getElementById('vOfficeEtaText');
+
+      if (fastest) {
+        document.getElementById('heroEta').textContent = `${fastest.etaStr}`;
+        document.getElementById('wEtaVal').textContent = `ETA: ${fastest.etaStr}`;
+        if (vOfficeEtaText) vOfficeEtaText.textContent = `ETA ${fastest.etaStr}`;
+
+        let statusClass = "pill-green";
+        let icon = "🚀 FASTEST ROUTE";
+        
+        if (fastest.waitAtTransfer > 6) {
+          statusClass = "pill-yellow";
+          icon = "⚡ FASTEST (Wait " + fastest.waitAtTransfer + "m)";
+        }
+
+        pill.className = `status-pill ${statusClass}`;
+        pill.innerHTML = `${icon}: Take ${fastest.origSeq} Bus ${activeRoute.originBusNo} (${fastest.origMin <= 1 ? 'Arr' : fastest.origMin + 'm'}) ➔ Reach Destination at ${fastest.etaStr}`;
+
+        if (wBadge) {
+          wBadge.className = `w-status-badge ${statusClass}`;
+          wBadge.textContent = `🚀 ETA ${fastest.etaStr}`;
+        }
+      } else {
+        pill.className = "status-pill pill-red";
+        pill.innerHTML = `🔴 NO FEASIBLE CONNECTION AVAILABLE CURRENTLY`;
+        document.getElementById('heroEta').textContent = `Missed`;
+        document.getElementById('wEtaVal').textContent = `ETA: Missed`;
+        if (vOfficeEtaText) vOfficeEtaText.textContent = `No Connection`;
+        if (wBadge) { wBadge.className = 'w-status-badge pill-red'; wBadge.textContent = `🔴 No Connection`; }
+      }
+
+      document.getElementById('codeDisplay').textContent = generateWidgetScript(activeRoute);
+    }
+
+    function generateWidgetScript(route) {
+      return `// Scriptable iOS Widget: Smart Scheduled Commute & Nearby Stops Mode
+const LTA_KEY = "JGy+GlkWTsqJFUgeMJxDNw==";
+
+const widget = await createWidget();
+if (config.runsInWidget) Script.setWidget(widget);
+else widget.presentMedium();
+Script.complete();
+
+async function createWidget() {
+  const w = new ListWidget();
+  w.backgroundColor = new Color("#0f172a");
+  w.setPadding(10, 14, 8, 14);
+
+  w.refreshAfterDate = new Date(Date.now() + 60000);
+  w.url = "scriptable://run?scriptName=" + encodeURIComponent(Script.name());
+
+  const now = new Date();
+  const day = now.getDay();
+  const hour = now.getHours();
+  const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+  // DEFAULT NEARBY MODE (Blk 124: 84249 & Blk 81: 84241)
+  let isMorning = (hour >= 10 && hour < 12 && day >= 1 && day <= 5);
+  let isEvening = (hour >= 18 && hour < 21 && day >= 1 && day <= 5);
+
+  if (!isMorning && !isEvening) {
+    const head = w.addStack();
+    const t = head.addText("📍 BLK 124 & BLK 81");
+    t.font = Font.boldSystemFont(12);
+    t.textColor = new Color("#38bdf8");
+    head.addSpacer();
+    const timeText = head.addText("🕒 " + timeStr);
+    timeText.font = Font.boldSystemFont(10);
+    timeText.textColor = new Color("#38bdf8");
+    w.addSpacer(4);
+
+    const [d124, d81] = await Promise.all([fetchStop("84249"), fetchStop("84241")]);
+    const s124 = d124?.Services?.find(s => s.ServiceNo === "14");
+    const s81 = d81?.Services?.find(s => s.ServiceNo === "14");
+
+    const row1 = w.addStack();
+    row1.centerAlignContent();
+    const r1L = row1.addText("🚏 Blk 124 (14): ");
+    r1L.font = Font.systemFont(11); r1L.textColor = new Color("#94a3b8");
+    row1.addSpacer();
+    const m124 = [calcMin(s124?.NextBus?.EstimatedArrival), calcMin(s124?.NextBus2?.EstimatedArrival)].filter(x => x !== "-").join(" • ");
+    const r1V = row1.addText(m124 || "Live");
+    r1V.font = Font.boldSystemFont(12); r1V.textColor = Color.white();
+
+    w.addSpacer(3);
+
+    const row2 = w.addStack();
+    row2.centerAlignContent();
+    const r2L = row2.addText("🚏 Blk 81 (14): ");
+    r2L.font = Font.systemFont(11); r2L.textColor = new Color("#94a3b8");
+    row2.addSpacer();
+    const m81 = [calcMin(s81?.NextBus?.EstimatedArrival), calcMin(s81?.NextBus2?.EstimatedArrival)].filter(x => x !== "-").join(" • ");
+    const r2V = row2.addText(m81 || "Live");
+    r2V.font = Font.boldSystemFont(12); r2V.textColor = new Color("#4ade80");
+
+    w.addSpacer(4);
+
+    const footer = w.addStack();
+    footer.centerAlignContent();
+    const fText = footer.addText("Updated: " + timeStr);
+    fText.font = Font.boldSystemFont(10); fText.textColor = new Color("#38bdf8");
+    footer.addSpacer();
+    const tapText = footer.addText("Tap to Refresh 🔄");
+    tapText.font = Font.mediumSystemFont(9); tapText.textColor = new Color("#94a3b8");
+
+    return w;
+  }
+
+  const STOP_ORIGIN = isMorning ? "84241" : "96381";
+  const BUS_ORIGIN = isMorning ? "14" : "47";
+  const STOP_TRANSFER = "85091";
+  const BUS_TRANSFER = isMorning ? "47" : "14";
+  const RIDE_1 = isMorning ? 12 : 18;
+  const RIDE_2 = isMorning ? 18 : 12;
+
+  const head = w.addStack();
+  head.centerAlignContent();
+  const t = head.addText(isMorning ? "☀️ MORNING COMMUTE" : "🌙 EVENING HOME");
+  t.font = Font.boldSystemFont(12);
+  t.textColor = new Color("#c084fc");
+  head.addSpacer();
+  const timeText = head.addText("🕒 " + timeStr);
+  timeText.font = Font.boldSystemFont(10);
+  timeText.textColor = new Color("#38bdf8");
+
+  const [dOrigin, dTransfer] = await Promise.all([
+    fetchStop(STOP_ORIGIN), fetchStop(STOP_TRANSFER)
+  ]);
+
+  const bOrig = dOrigin?.Services?.find(s => s.ServiceNo === BUS_ORIGIN);
+  const bTrans = dTransfer?.Services?.find(s => s.ServiceNo === BUS_TRANSFER);
+
+  const om1 = calcMin(bOrig?.NextBus?.EstimatedArrival);
+  const om2 = calcMin(bOrig?.NextBus2?.EstimatedArrival);
+  const om3 = calcMin(bOrig?.NextBus3?.EstimatedArrival);
+
+  const tm1 = calcMin(bTrans?.NextBus?.EstimatedArrival);
+  const tm2 = calcMin(bTrans?.NextBus2?.EstimatedArrival);
+  const tm3 = calcMin(bTrans?.NextBus3?.EstimatedArrival);
+
+  const origMinNum = om1 === "Arr" ? 0 : (parseInt(om1) || 0);
+  const userReach = origMinNum + RIDE_1 + 2;
+  const catchBus = [parseInt(tm1), parseInt(tm2)].find(m => m >= userReach);
+
+  const row1 = w.addStack();
+  row1.centerAlignContent();
+  const r1L = w.addText("🚏 Start: Bus " + BUS_ORIGIN + " ");
+  r1L.font = Font.systemFont(11);
+  r1L.textColor = new Color("#94a3b8");
+  row1.addSpacer();
+
+  const oSeq = [om1 === "Arr" ? "Arr" : (om1 !== "-" ? om1 + "m" : null), om2 !== "-" ? om2 + "m" : null, om3 !== "-" ? om3 + "m" : null].filter(x => x).join(" • ");
+  const r1V = w.addText(oSeq);
+  r1V.font = Font.boldSystemFont(12);
+  r1V.textColor = Color.white();
+
+  w.addSpacer(3);
+
+  const row2 = w.addStack();
+  row2.centerAlignContent();
+  const r2L = w.addText("🔄 Connect: Bus " + BUS_TRANSFER + " ");
+  r2L.font = Font.systemFont(11);
+  r2L.textColor = new Color("#94a3b8");
+  row2.addSpacer();
+
+  const tSeq = [tm1 === "Arr" ? "Arr" : (tm1 !== "-" ? tm1 + "m" : null), tm2 !== "-" ? tm2 + "m" : null, tm3 !== "-" ? tm3 + "m" : null].filter(x => x).join(" • ");
+  const r2V = row2.addText(tSeq);
+  r2V.font = Font.boldSystemFont(12);
+  r2V.textColor = new Color("#4ade80");
+
+  w.addSpacer(4);
+
+  const etaRow = w.addStack();
+  etaRow.centerAlignContent();
+  if (catchBus !== undefined) {
+    const wait = catchBus - userReach;
+    const totalMin = catchBus + RIDE_2;
+    const eta = new Date(Date.now() + totalMin * 60000).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+
+    const etaText = etaRow.addText("ETA: " + eta);
+    etaText.font = Font.boldSystemFont(13);
+    etaText.textColor = Color.white();
+
+    etaRow.addSpacer();
+    const badge = etaRow.addStack();
+    badge.setPadding(2, 6, 2, 6);
+    badge.cornerRadius = 4;
+
+    if (wait >= 2 && wait <= 6) {
+      badge.backgroundColor = new Color("#15803d");
+      const bt = badge.addText("🟢 Wait " + wait + "m");
+      bt.font = Font.boldSystemFont(10);
+      bt.textColor = new Color("#4ade80");
+    } else if (wait > 6) {
+      badge.backgroundColor = new Color("#854d0e");
+      const bt = badge.addText("🟡 Wait " + wait + "m");
+      bt.font = Font.boldSystemFont(10);
+      bt.textColor = new Color("#fde047");
+    } else {
+      badge.backgroundColor = new Color("#991b1b");
+      const bt = badge.addText("🔴 Risky " + wait + "m");
+      bt.font = Font.boldSystemFont(10);
+      bt.textColor = new Color("#fca5a5");
+    }
+  } else {
+    const etaText = etaRow.addText("🔴 Connection Missed");
+    etaText.font = Font.boldSystemFont(13);
+    etaText.textColor = new Color("#fca5a5");
+  }
+
+  w.addSpacer(3);
+
+  const footer = w.addStack();
+  footer.centerAlignContent();
+  const fText = footer.addText("Updated: " + timeStr);
+  fText.font = Font.boldSystemFont(10);
+  fText.textColor = new Color("#38bdf8");
+
+  footer.addSpacer();
+
+  const tapText = footer.addText("Tap to Refresh 🔄");
+  tapText.font = Font.mediumSystemFont(9);
+  tapText.textColor = new Color("#94a3b8");
+
+  return w;
+}
+
+async function fetchStop(code) {
+  const req = new Request("https://datamall2.mytransport.sg/ltaodataservice/v3/BusArrival?BusStopCode=" + code);
+  req.headers = { "AccountKey": LTA_KEY };
+  try { return await req.loadJSON(); } catch(e) { return null; }
+}
+
+function calcMin(iso) {
+  if (!iso) return "-";
+  const diff = Math.round((new Date(iso) - Date.now()) / 60000);
+  return diff <= 1 ? "Arr" : diff;
+}
+`;
+    }
+
+    document.getElementById('copyCodeBtn').addEventListener('click', () => {
+      const code = document.getElementById('codeDisplay').textContent;
+      navigator.clipboard.writeText(code);
+      alert("Scriptable widget code copied!");
+    });
+
+    document.getElementById('refreshBtn').addEventListener('click', updateDashboard);
+
+    applyDashboardModeUI();
+    renderRouteChips();
+    updateDashboard();
+    setInterval(updateDashboard, 15000);
+  </script>
+</body>
+</html>

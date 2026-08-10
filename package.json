@@ -1,0 +1,14 @@
+{
+  "name": "singapore-commute-manager",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Singapore LTA Bus Arrival & Scheduled Commute Tracker",
+  "main": "server.mjs",
+  "scripts": {
+    "start": "node server.mjs",
+    "dev": "node server.mjs"
+  },
+  "keywords": ["lta", "bus", "singapore", "commute", "vercel", "scriptable"],
+  "author": "",
+  "license": "MIT"
+}

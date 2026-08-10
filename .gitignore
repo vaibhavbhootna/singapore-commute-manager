@@ -1,0 +1,9 @@
+# Environment Variables (Secrets)
+.env
+.env.local
+.env.production
+
+# Vercel & Node Dependencies
+.vercel
+node_modules/
+.DS_Store
