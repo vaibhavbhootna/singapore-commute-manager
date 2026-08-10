@@ -3,12 +3,16 @@
     {
       "code": "84249",
       "name": "Blk 124",
-      "importantBuses": ["46"]
+      "importantBuses": [
+        "46"
+      ]
     },
     {
       "code": "84241",
       "name": "Blk 81",
-      "importantBuses": ["14"]
+      "importantBuses": [
+        "14"
+      ]
     }
   ],
   "commuteRoutes": [
@@ -25,7 +29,13 @@
       "officeStopName": "Office (Changi)",
       "ride1Min": 12,
       "ride2Min": 18,
-      "activeDays": [1, 2, 3, 4, 5],
+      "activeDays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
       "startHour": 10,
       "endHour": 12
     },
@@ -42,23 +52,26 @@
       "officeStopName": "Blk 81 (Home)",
       "ride1Min": 18,
       "ride2Min": 12,
-      "activeDays": [1, 2, 3, 4, 5],
+      "activeDays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
       "startHour": 18,
       "endHour": 21
     }
   ],
   "stopLookup": {
-    "84249": "Blk 124 (Bedok Reservoir)",
-    "84241": "Blk 81 (Bedok Reservoir)",
-    "85091": "Opp Amber Residences",
-    "96381": "Changi Business Park",
-    "84009": "Bedok Bus Interchange",
-    "02051": "Opp Ritz-Carlton",
-    "02049": "Raffles Hotel",
-    "04169": "City Hall Stn Exit B",
-    "03218": "Dhoby Ghaut Stn Exit B",
-    "08057": "Plaza Singapura",
-    "20251": "Jurong East Int",
-    "17009": "Clementi Int"
+    "84201": "Bedok Resvr Stn Exit A",
+    "84209": "Bedok Resvr Stn Exit B",
+    "84249": "Blk 124",
+    "84241": "Blk 81",
+    "85099": "Tanah Merah Stn Exit A",
+    "85091": "Tanah Merah Stn Exit B",
+    "96381": "Changi City Pt",
+    "96389": "Opp Changi City Pt",
+    "84009": "Bedok Int"
   }
 }
