@@ -6,6 +6,10 @@
       "use": "@vercel/static"
     },
     {
+      "src": "public/routes-db.json",
+      "use": "@vercel/static"
+    },
+    {
       "src": "api/bus-arrival.js",
       "use": "@vercel/node"
     }
@@ -14,6 +18,14 @@
     {
       "src": "/api/bus-arrival",
       "dest": "/api/bus-arrival.js"
+    },
+    {
+      "src": "/public/routes-db.json",
+      "dest": "/public/routes-db.json"
+    },
+    {
+      "src": "/routes-db.json",
+      "dest": "/public/routes-db.json"
     },
     {
       "src": "/(.*)",
